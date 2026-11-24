@@ -1,5 +1,5 @@
 * text=auto
-*.bat text eol=crlf
+*.bat -text
 *.py text eol=lf
 *.pyw text eol=lf
 *.rb text eol=lf
