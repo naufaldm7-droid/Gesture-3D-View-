@@ -20,23 +20,81 @@ def _p(msg):
     print(msg, flush=True)
 
 
-def open_camera(cfg, index=None):
+DARK = 12.0       # kecerahan rata-rata (0..255) di bawah ini = gambar hitam (penutup kamera / mode privasi)
+SLOW_FPS = 8.0
+STATIC = 0.15     # beda rata-rata antar-frame di bawah ini = gambar diam total (kamera virtual, bukan sensor)
+
+
+def _open_one(cfg, idx):
     import cv2
 
     cc = cfg["camera"]
     backends = {"dshow": cv2.CAP_DSHOW, "msmf": cv2.CAP_MSMF, "any": cv2.CAP_ANY}
-    idx = cc["index"] if index is None else index
     cap = cv2.VideoCapture(idx, backends.get(cc.get("backend", "dshow"), cv2.CAP_ANY))
     if not cap.isOpened():
-        raise RuntimeError(
-            "Kamera %d tidak bisa dibuka. Tutup aplikasi lain yang memakai kamera (Zoom/Teams), "
-            "cek Settings > Privacy > Camera, atau coba --camera 1." % idx)
+        cap.release()
+        return None
     if cc.get("fourcc"):  # MJPG: banyak webcam laptop hanya ~17-22 fps dalam format bawaan (YUY2)
         cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*cc["fourcc"]))
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, cc["width"])
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cc["height"])
     cap.set(cv2.CAP_PROP_FPS, cc["fps"])
     return cap
+
+
+def _probe(cap, seconds=0.8):
+    """(fps, kecerahan rata-rata, gerak) beberapa frame pertama.
+
+    gerak = beda rata-rata antar-frame. Sensor kamera asli selalu berderau (>~0.5) walau pemandangan diam;
+    kamera virtual (mis. "Windows Virtual Camera" yang menampilkan logo) persis 0.
+    """
+    t0, n, br, diff, prev = time.monotonic(), 0, 0.0, [], None
+    while time.monotonic() - t0 < seconds:
+        ok, f = cap.read()
+        if ok and f is not None:
+            n += 1
+            small = f[::8, ::8].astype("float32")
+            br += float(small.mean())
+            if prev is not None:
+                diff.append(float(abs(small - prev).mean()))
+            prev = small
+    return n / seconds, (br / n if n else 0.0), (sum(diff) / len(diff) if diff else 0.0)
+
+
+def open_camera(cfg, index=None, log=None):
+    """Buka kamera. camera.index = "auto": pakai kamera pertama yang mengirim gambar terang & cukup cepat.
+
+    Kenapa: laptop sering punya dua kamera (bawaan + USB). Kamera bawaan Lenovo dengan penutup/mode privasi
+    aktif tetap "terbuka" tetapi hanya mengirim gambar hitam ~1 fps, sehingga gestur terasa macet.
+    """
+    want = cfg["camera"]["index"] if index is None else index
+    if want != "auto":
+        cap = _open_one(cfg, int(want))
+        if cap is None:
+            raise RuntimeError(
+                "Kamera %s tidak bisa dibuka. Tutup aplikasi lain yang memakai kamera (Zoom/Teams), "
+                "cek Settings > Privacy > Camera, atau coba --camera 1." % want)
+        return cap
+    tried = []
+    for idx in range(int(cfg["camera"].get("auto_max", 3))):
+        cap = _open_one(cfg, idx)
+        if cap is None:
+            continue
+        fps, br, motion = _probe(cap)
+        tried.append((idx, fps, br, motion))
+        if log:
+            log("Kamera %d: %.0f fps, kecerahan %.0f, gerak %.2f%s" % (idx, fps, br, motion,
+                                                                     " (gambar diam: kamera virtual?)" if motion < STATIC else ""))
+        if br >= DARK and fps >= SLOW_FPS and motion >= STATIC:
+            return cap
+        cap.release()
+    if not tried:
+        raise RuntimeError("Tidak ada kamera yang bisa dibuka. Sambungkan webcam atau cek Settings > Privacy > Camera.")
+    # pakai yang terbaik walau kurang ideal: kamera asli (bergerak) dulu, lalu terang, lalu cepat
+    best = max(tried, key=lambda x: (x[3] >= STATIC, x[2] >= DARK, x[1]))
+    if log:
+        log("Tidak ada kamera yang terang & lancar; memakai kamera %d (overlay akan memberi peringatan)." % best[0])
+    return _open_one(cfg, best[0])
 
 
 def doctor(cfg):
@@ -69,6 +127,14 @@ def doctor(cfg):
         _p("suara (opsional)        : tidak aktif (pip install vosk, lalu --download-voice-model)")
     if cfg["host"]["name"] == "sketchup":
         return bad + doctor_sketchup(cfg)
+    if getattr(sys, "frozen", False):
+        _p("perintah GESTURE/KAMERA : dari plugin TCIGestureControl.bundle (ApplicationPlugins)")
+    else:
+        bad += _doctor_pgp()
+    return bad + _doctor_autocad(cfg)
+
+
+def _doctor_pgp():
     try:
         sys.path.insert(0, CFG.APP_DIR)
         import pasang_di_autocad as PG
@@ -78,6 +144,11 @@ def doctor(cfg):
                                              "belum -> python pasang_di_autocad.py"))
     except Exception as e:
         _p("perintah GESTURE/KAMERA : tidak bisa dicek (%s)" % e)
+    return 0
+
+
+def _doctor_autocad(cfg):
+    bad = 0
     try:
         import win32com.client  # noqa: F401
         _p("pywin32 (COM)           : OK")
@@ -196,6 +267,17 @@ class FrameGrabber(threading.Thread):
         self.seq = 0
         self.error = None
         self.stopping = False
+        self.started = time.monotonic()
+        self.stamps = []        # waktu frame 2 detik terakhir -> fps nyata kamera
+        self.brightness = 128.0  # rata-rata bergerak (dicek tiap 10 frame, murah)
+        self.motion = 1.0        # beda antar-frame (0 = gambar diam: kamera virtual / bukan sensor)
+        self._prev_small = None
+
+    def health(self):
+        """(fps kamera 2 s terakhir, kecerahan) untuk peringatan di overlay."""
+        now = time.monotonic()
+        recent = [s for s in self.stamps if now - s <= 2.0]
+        return len(recent) / 2.0, self.brightness
 
     def run(self):
         fails = 0
@@ -209,6 +291,14 @@ class FrameGrabber(threading.Thread):
                 time.sleep(0.01)
                 continue
             fails = 0
+            now = time.monotonic()
+            self.stamps = [s for s in self.stamps if now - s <= 2.0] + [now]
+            if self.seq % 10 == 0:
+                small = frame[::16, ::16].astype("float32")
+                self.brightness = 0.7 * self.brightness + 0.3 * float(small.mean())
+                if self._prev_small is not None and self._prev_small.shape == small.shape:
+                    self.motion = 0.7 * self.motion + 0.3 * float(abs(small - self._prev_small).mean())
+                self._prev_small = small
             with self.cond:
                 self.frame = frame
                 self.seq += 1
@@ -234,6 +324,7 @@ class TrackWorker(threading.Thread):
         self.seq = 0
         self.error = None
         self.stopping = False
+        self.detect_s = 0.0  # total waktu deteksi (untuk --bench)
 
     def run(self):
         self.grabber.start()
@@ -247,7 +338,9 @@ class TrackWorker(threading.Thread):
                 continue
             t = time.monotonic()
             try:
+                t0 = time.perf_counter()
                 hands = self.tracker.process(frame, t)
+                self.detect_s += time.perf_counter() - t0
             except Exception as e:  # jangan biarkan thread mati diam-diam
                 self.error = "Pelacak tangan error: %s" % e
                 break
@@ -270,8 +363,23 @@ class TrackWorker(threading.Thread):
         self.grabber.join(timeout=2.0)
 
 
-def _status(acad, act, voice, fps, args, rect=None):
+def camera_warning(grabber):
+    """None | "dark" | "static" | "slow:N" (setelah 2,5 detik pertama, supaya tidak berkedip saat menyala)."""
+    if time.monotonic() - grabber.started < 2.5:
+        return None
+    fps, br = grabber.health()
+    if br < DARK:
+        return "dark"
+    if getattr(grabber, "motion", 1.0) < STATIC:
+        return "static"
+    if fps < SLOW_FPS:
+        return "slow:%d" % int(round(fps))
+    return None
+
+
+def _status(acad, act, voice, fps, args, rect=None, cam_warn=None):
     return {
+        "cam_warn": cam_warn,
         "host_label": act.host_label,
         "two": act.two_label,
         "rect": rect,
@@ -308,7 +416,7 @@ def run(cfg, args):
         act.bridge = acad
 
     tracker = HandTracker(cfg)
-    cap = open_camera(cfg, args.camera)
+    cap = open_camera(cfg, args.camera, log=_p)
     ctl = Controller(cfg)
     if args.start_paused and ctl.armed:
         ctl.toggle_arm(time.monotonic(), [])
@@ -337,10 +445,11 @@ def run(cfg, args):
     show_help = bool(cfg["hud"]["show_help"])
     mirror = bool(cfg["camera"]["mirror"])
     targets = [n.lower() for n in cfg["output"]["target_processes"]]
-    try:
-        os.remove(STOP_FLAG)
-    except OSError:
-        pass
+    if not os.environ.get("TCI_GC_LAUNCHER"):  # lewat peluncur: sinyal basi sudah dibersihkan saat kunci diambil
+        try:
+            os.remove(STOP_FLAG)
+        except OSError:
+            pass
 
     _p("Gesture CAD berjalan (%s, host %s). %s. Keluar: tombol Tutup, Ctrl+Alt+Q, atau perintah nyala/mati di %s."
        % (style, act.host_label, "MODE SIMULASI (tidak ada input dikirim)" if args.simulate else
@@ -367,7 +476,10 @@ def run(cfg, args):
             t = time.monotonic()
             frames += 1
             if args.bench and t - t_start >= args.bench:
-                _p("Bench: %d frame dalam %.1f s = %.1f fps (UI %s)" % (frames, t - t_start, frames / (t - t_start), style))
+                el = t - t_start
+                _p("Bench: %d frame dalam %.1f s = %.1f fps (UI %s) | kamera %.1f fps | deteksi rata2 %.0f ms"
+                   % (frames, el, frames / el, style, worker.grabber.seq / el,
+                      1000.0 * worker.detect_s / max(worker.seq, 1)))
                 break
 
             intents = []
@@ -423,7 +535,8 @@ def run(cfg, args):
                 if act.fg_name in targets:
                     acad_rect = act.rect  # overlay menempel ke jendela AutoCAD (terakhir terlihat)
                 clicks, act.clicks = act.clicks, []
-                ui.frame(shown, hands, ctl.view(), _status(acad, act, voice, fps, args, acad_rect),
+                ui.frame(shown, hands, ctl.view(),
+                         _status(acad, act, voice, fps, args, acad_rect, camera_warning(worker.grabber)),
                          probe.cursor(), clicks, t)
                 req = ui.take_request()
                 if req == "quit":

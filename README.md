@@ -1,85 +1,43 @@
-# TCI Gesture Control — kendalikan SketchUp & AutoCAD dengan tangan
+# TCI Gesture Control untuk AutoCAD
 
-Gerakkan kursor, klik, putar, geser, dan zoom model 3D **dengan tangan di depan kamera laptop**, tanpa sentuh
-mouse. Aplikasi ini berjalan di Windows untuk **SketchUp** dan **AutoCAD**.
+Kendalikan **AutoCAD** dengan **gerakan tangan di depan kamera laptop**: kursor, klik, putar, geser, dan zoom
+model 3D, serta menu perintah, tanpa menyentuh mouse.
 
-*Hand-gesture control for SketchUp and AutoCAD on Windows using your laptop webcam (MediaPipe). Everything runs
-locally; documentation is in Indonesian.*
+*Hand-gesture control for AutoCAD on Windows using your laptop webcam (MediaPipe). Installs as a regular
+Autodesk plugin, no Python needed. Everything runs locally; documentation is in Indonesian.*
 
 - **Kursor presisi seperti mouse:** gerak pelan = presisi, gerak cepat = jauh, tangan diam = kursor terkunci.
 - **Klik dengan jepitan:** jepit lalu lepas = klik, jepit lalu geser = drag, jepit diam = klik kanan.
 - **Navigasi satu tangan:** ✊ orbit, ✌ pan, 🤟 zoom.
 - **Dua tangan memegang tampilan 3D:** ✊✊ putar, 🤏🤏 geser, rentangkan/rapatkan = zoom halus.
-- **Menu kaca** berisi tool, misalnya Line, Push/Pull, Follow Me, Move, Rotate, Tape, tampilan standar, dan gaya
-  tampilan.
-- **Overlay transparan** di atas aplikasi CAD yang tembus-klik, plus tombol Jeda dan Tutup.
-- **Nyala/mati dari dalam aplikasi:** tombol toolbar di SketchUp, atau ketik `GK` di AutoCAD.
-- **Asisten suara opsional** yang berjalan offline, misalnya "SketchUp please help me", lalu "push pull".
+- **Menu kaca 7 halaman:** 2D, SOLID, EDIT, UBAH, VIEW, UMUM, WINDOW.
+- **Overlay transparan** di atas AutoCAD yang tembus-klik, plus tombol Jeda dan Tutup.
+- **Nyala/mati dari AutoCAD:** ketik `GK` (atau `GESTURE` / `KAMERA`).
 
-> **Privasi:** gambar kamera dan suara diproses **hanya di laptop Anda**. Tidak ada yang dikirim ke internet.
-> Internet hanya dipakai sekali saat persiapan, untuk mengunduh paket Python dan model tangan.
+> **Privasi:** gambar kamera diproses **hanya di laptop Anda**. Tidak ada yang dikirim ke internet.
 
-## Status
+## Pasang (pengguna)
 
-| Bagian | Status |
-|---|---|
-| Mesin gestur, overlay, kamera | dipakai dan diuji langsung di Windows 11 + AutoCAD 2026; 133 uji otomatis |
-| AutoCAD (COM, perintah `GK`) | diuji langsung di AutoCAD 2026 |
-| SketchUp (ekstensi Ruby) | **beta**: belum pernah dijalankan di SketchUp sungguhan. Jalankan langkah verifikasi di bawah, dan laporkan masalah lewat *Issues*. |
+**[⬇ Download TCIGestureControl-Setup.exe](../../releases/latest/download/TCIGestureControl-Setup.exe)**
+(~80 MB). Halaman unduhan juga ada di GitHub Pages repo ini.
 
-## Kebutuhan
+1. Jalankan `TCIGestureControl-Setup.exe`, lalu **Next → Install**. Tidak perlu hak admin.
+2. Buka (atau mulai ulang) **AutoCAD 2021 atau lebih baru**. Command line menampilkan
+   *"TCI Gesture Control siap"*.
+3. Ketik **`GK`** lalu Enter untuk menyalakan kamera gestur. Ketik `GK` lagi untuk mematikannya.
 
-- Windows 10/11 64-bit dengan webcam.
-- **Python 3.12 64-bit** dari [python.org](https://www.python.org/downloads/). Saat memasang, centang
-  "Add python.exe to PATH" dan "py launcher".
-- SketchUp 2017+ dan/atau AutoCAD (yang mendukung COM).
-- Ruangan cukup terang. Di ruangan redup, webcam otomatis turun ke ~15 fps.
+Catatan pemasangan:
+- Kalau AutoCAD menampilkan dialog keamanan untuk `TCIGestureControl.lsp`, pilih **Always Load**.
+- Windows SmartScreen mungkin menampilkan *"Windows protected your PC"*, karena penginstal belum bertanda
+  tangan digital. Klik *More info → Run anyway*.
+- Untuk melepas: **Settings → Apps → TCI Gesture Control untuk AutoCAD → Uninstall**.
+- Alternatif tanpa penginstal: unduh ZIP dari [Releases](../../releases), ekstrak, lalu jalankan `INSTAL.bat`
+  (lepas dengan `HAPUS.bat`).
 
-## Pasang
+Kebutuhan: Windows 10/11 64-bit, webcam, AutoCAD 2021+, dan ruangan yang cukup terang (di ruangan redup,
+webcam turun ke ~15 fps).
 
-1. **Unduh**: tombol hijau **Code → Download ZIP**, lalu ekstrak ke folder permanen, misalnya
-   `C:\Users\<nama>\TCI-Gesture-Control`. Jangan dipindah setelah dipasang, karena ekstensi menyimpan lokasi ini.
-   Path tanpa spasi paling aman.
-2. **Persiapan**: buka folder itu, klik kanan di ruang kosong → *Open in Terminal*, lalu jalankan:
-
-   ```powershell
-   .\siapkan.bat sketchup
-   ```
-
-   Untuk AutoCAD saja, jalankan `.\siapkan.bat`. Langkah ini membuat lingkungan Python, memasang paket, mengunduh
-   model tangan (~7.8 MB), memasang ekstensi SketchUp, lalu mengecek semuanya.
-3. **AutoCAD** (opsional), untuk memasang perintah `GESTURE` / `KAMERA` / `GK`:
-
-   ```powershell
-   .venv\Scripts\python.exe pasang_di_autocad.py
-   ```
-
-   Skrip ini membuat cadangan `acad.pgp` dulu. `--hapus` melepasnya kembali persis seperti semula.
-
-## Verifikasi SketchUp (sekali)
-
-1. Buka SketchUp, lalu **Window → Ruby Console**. Harus ada baris `[Gesture Control] jembatan siap di 127.0.0.1:47820`.
-2. Di terminal folder aplikasi, cek sambungan:
-
-   ```powershell
-   .venv\Scripts\python.exe -m gesture_cad --config config_sketchup.json --check
-   ```
-
-   Hasilnya harus "SketchUp terhubung".
-3. Uji semua nama tool. Uji ini hanya mengganti tool dan tampilan, tidak mengubah model:
-
-   ```powershell
-   .venv\Scripts\python.exe -m gesture_cad --config config_sketchup.json --verify-sketchup
-   ```
-
-   Tool yang "DITOLAK" bisa diganti di `config_sketchup.json` (lihat [docs/sketchup-bridge.md](docs/sketchup-bridge.md)).
-
-## Pakai
-
-- **SketchUp:** klik tombol toolbar **Gesture Control** (atau *Extensions → Gesture Control*). Klik lagi untuk
-  mematikan. Shortcut bisa dipasang lewat *Window → Preferences → Shortcuts*.
-- **AutoCAD:** ketik `GK` lalu Enter. Ketik lagi untuk mematikan.
-- **Tutup:** tombol ✕ Tutup di atas kartu kamera, `Ctrl+Alt+Q`, atau tutup aplikasi CAD-nya.
+## Gestur
 
 | Gestur | Aksi |
 |---|---|
@@ -89,51 +47,64 @@ locally; documentation is in Indonesian.*
 | ✊✊ dua kepalan | putar tampilan 3D (setir = putar tegak; rentang = zoom) |
 | 🤏🤏 dua cubitan | geser tampilan (rentang = zoom) |
 | 👍 / 👎 / 🤘 ditahan | Enter / Undo / Esc |
-| 🤙 ditahan | menu kaca berisi tool |
+| 🤙 ditahan | menu kaca berisi perintah |
 | 🖐 telapak | berhenti, atau "angkat mouse" untuk memindah tangan |
 | dua telapak 1,5 s, atau `Ctrl+Alt+G` | jeda / aktif |
 
-Coba tanpa mengirim input apa pun:
-`.venv\Scripts\python.exe -m gesture_cad --config config_sketchup.json --simulate`
+Untuk menutup: tombol **✕ Tutup** di atas kartu kamera, `Ctrl+Alt+Q`, `GK`, atau tutup AutoCAD.
 
 ## Menyetel
 
-Semua kecepatan dan ambang ada di `config_sketchup.json` (SketchUp) dan `config.json` (AutoCAD). Panduan
-"gejala → kunci" ada di [docs/tuning.md](docs/tuning.md). Contoh: kursor terasa licin → turunkan
+Edit `config.json` di
+`%APPDATA%\Autodesk\ApplicationPlugins\TCIGestureControl.bundle\Contents\app\`, lalu ketik `GK` dua kali.
+Panduan "gejala → kunci" ada di [docs/tuning.md](docs/tuning.md). Contoh: kursor terasa licin → turunkan
 `pointer.gain_slow`.
 
-## Suara (opsional)
+## Dari kode sumber (pengembang)
+
+Butuh Python 3.12 64-bit ([python.org](https://www.python.org/downloads/); centang "Add python.exe to PATH" dan
+"py launcher").
+
+```powershell
+.\siapkan.bat                                           # .venv, paket, model tangan, pengecekan
+.venv\Scripts\python.exe -m pytest -q tests             # uji otomatis
+.venv\Scripts\python.exe -m gesture_cad --simulate      # coba tanpa mengirim input
+.venv\Scripts\python.exe pasang_di_autocad.py           # perintah GK lewat acad.pgp (mode pengembang)
+```
+
+Untuk membangun plugin dan penginstal sendiri (hasilnya di `plugin_build\release\`):
+
+```powershell
+.venv\Scripts\python.exe -m pip install pyinstaller
+winget install JRSoftware.InnoSetup --scope user          # sekali, untuk Setup.exe
+.venv\Scripts\python.exe buat_plugin_autocad.py            # exe + bundle + ZIP
+.venv\Scripts\python.exe buat_setup_autocad.py             # TCIGestureControl-Setup.exe
+```
+
+Suara opsional (offline, hanya mode kode sumber):
 
 ```powershell
 .venv\Scripts\python.exe -m pip install vosk
 .venv\Scripts\python.exe -m gesture_cad --download-voice-model
 ```
 
-Unduhan model sekitar 40 MB, dari alphacephei.com. Setelah itu ucapkan "SketchUp please help me" (atau
-"AutoCAD please help me"), lalu perintah dalam bahasa Inggris, misalnya "line", "push pull", "zoom extents",
-atau "thank you" untuk menidurkan asisten.
+Setelah itu ucapkan "AutoCAD please help me", lalu perintah seperti "line" atau "zoom extents".
 
 ## Dokumentasi
 
 - [docs/how-it-works.md](docs/how-it-works.md): arsitektur dan modul.
-- [docs/lessons-learned.md](docs/lessons-learned.md): kenapa desainnya begini; temuan dari uji nyata.
-- [docs/sketchup-bridge.md](docs/sketchup-bridge.md): protokol jembatan, nama tool, debug Ruby.
+- [docs/lessons-learned.md](docs/lessons-learned.md): temuan dari uji nyata, dan kenapa desainnya begini.
 - [docs/tuning.md](docs/tuning.md): menyetel rasa.
-
-## Uji (untuk pengembang)
-
-```powershell
-.venv\Scripts\python.exe -m pytest -q tests
-```
 
 ## Keamanan
 
-- Mouse dan keyboard hanya dikirim bila jendela SketchUp atau AutoCAD sedang aktif. Semua tombol dilepas saat
-  tangan hilang, jeda, atau keluar.
-- Ekstensi SketchUp membuka port **lokal** `127.0.0.1:47820` yang hanya menerima daftar operasi tetap (pilih
-  tool, tampilan, kamera). Port ini tidak bisa menjalankan kode bebas.
-- Library ini hanya mengoperasikan aplikasi. Hasil gambar tetap tanggung jawab penggunanya.
+- Mouse dan keyboard hanya dikirim bila jendela AutoCAD sedang aktif. Semua tombol dilepas saat tangan hilang,
+  jeda, atau keluar.
+- Plugin hanya menambah perintah `GK` / `GESTURE` / `KAMERA` dan tidak mengubah `acad.pgp` maupun pengaturan
+  keamanan AutoCAD.
+- Library ini hanya mengoperasikan AutoCAD. Hasil gambar tetap tanggung jawab penggunanya.
 
 ## Lisensi
 
-Lihat [LICENSE](LICENSE).
+Lihat [LICENSE](LICENSE). Pustaka pihak ketiga di dalam plugin tercantum di
+`Contents\app\THIRD_PARTY_NOTICES.txt`.

@@ -1,7 +1,5 @@
 @echo off
 rem Persiapan SEKALI: lingkungan Python (.venv), paket, model tangan MediaPipe, lalu pengecekan.
-rem   siapkan.bat            -> untuk AutoCAD (config.json)
-rem   siapkan.bat sketchup   -> juga memasang ekstensi SketchUp + cek profil SketchUp
 rem Membutuhkan internet: paket Python dari PyPI dan model tangan ~7.8 MB dari Google MediaPipe.
 cd /d "%~dp0"
 where py >nul 2>nul
@@ -19,12 +17,7 @@ if not exist ".venv\Scripts\python.exe" goto gagal
 if not exist "models\hand_landmarker.task" (
   ".venv\Scripts\python.exe" -m gesture_cad --download-model || goto gagal
 )
-if /i "%~1"=="sketchup" (
-  ".venv\Scripts\python.exe" pasang_di_sketchup.py || goto gagal
-  ".venv\Scripts\python.exe" -m gesture_cad --config config_sketchup.json --check
-) else (
-  ".venv\Scripts\python.exe" -m gesture_cad --check
-)
+".venv\Scripts\python.exe" -m gesture_cad --check
 echo.
 echo Selesai.
 if /i not "%~2"=="nopause" pause

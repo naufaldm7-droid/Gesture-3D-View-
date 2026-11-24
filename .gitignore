@@ -8,5 +8,6 @@ __pycache__/
 .pytest_cache/
 # Lain-lain
 dist/
+plugin_build/
 Thumbs.db
 desktop.ini

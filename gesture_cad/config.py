@@ -4,11 +4,15 @@ import copy
 import json
 import os
 import re
+import sys
 
 from . import gestures as G
 from .keys import parse_combo
 
-APP_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if getattr(sys, "frozen", False):  # GestureControl.exe (PyInstaller): config & models di samping exe
+    APP_DIR = os.path.dirname(os.path.abspath(sys.executable))
+else:
+    APP_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG_PATH = os.path.join(APP_DIR, "config.json")
 
 CONTINUOUS_MODES = ("pointer", "drag", "orbit", "pan", "zoom", "idle")
@@ -19,7 +23,7 @@ MAX_ITEMS_PER_PAGE = 16
 MAX_LABEL = 14
 
 DEFAULTS = {
-    "camera": {"index": 0, "width": 640, "height": 480, "fps": 30, "backend": "dshow", "fourcc": "MJPG", "mirror": True},
+    "camera": {"index": "auto", "auto_max": 3, "width": 640, "height": 480, "fps": 30, "backend": "dshow", "fourcc": "MJPG", "mirror": True},
     "tracker": {
         "max_hands": 2, "model_complexity": 1, "min_detection": 0.6, "min_tracking": 0.5,
         "task_model": "models/hand_landmarker.task",
@@ -240,6 +244,9 @@ def validate(cfg):
     for k in ("orbit_pose", "pan_pose"):
         if cfg["two_hand"][k] not in G.ALL_POSES:
             errors.append("two_hand.%s %r tidak dikenal" % (k, cfg["two_hand"][k]))
+    idx = cfg["camera"]["index"]
+    if idx != "auto" and not (isinstance(idx, int) and idx >= 0):
+        errors.append("camera.index harus angka >= 0 atau \"auto\"")
     if cfg["host"]["name"] not in ("autocad", "sketchup"):
         errors.append("host.name harus 'autocad' atau 'sketchup'")
     for kind, mods in cfg["output"]["nav"].items():

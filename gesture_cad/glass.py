@@ -295,6 +295,16 @@ def island_content(view, status, t):
         else:
             c.update(title="Putar tampilan 3D", color=MODE_COLOR[C.HOLO],
                      sub="gerak = putar  \u00b7  setir = putar tegak  \u00b7  rentang = zoom")
+    warn = status.get("cam_warn")
+    if warn == "dark":
+        c.update(expanded=True, icon="\U0001f4f7", title="Kamera gelap / tertutup", color=AMBER,
+                 sub="buka penutup kamera, tombol kamera (F8/F9), atau sambungkan webcam")
+    elif warn == "static":
+        c.update(expanded=True, icon="\U0001f4f7", title="Tidak ada kamera asli", color=AMBER,
+                 sub="hanya kamera virtual; aktifkan kamera laptop (tombol F8/F9) atau sambungkan webcam")
+    elif warn and warn.startswith("slow"):
+        c.update(expanded=True, icon="\U0001f4f7", title="Kamera lambat (%s fps)" % warn.split(":")[1], color=AMBER,
+                 sub="tambah cahaya dari depan; tutup aplikasi lain yang memakai kamera")
     if voice.get("state") == "listening":
         heard = voice.get("partial") or voice.get("heard") or "katakan perintah\u2026"
         c.update(expanded=True, icon="\U0001f399", title="Mendengarkan", sub=heard, color=RED)

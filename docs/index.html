@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TCI Gesture Control untuk AutoCAD</title>
+<meta name="description" content="Kendalikan AutoCAD dengan gerakan tangan lewat kamera laptop. Pasang dengan satu penginstal, tanpa Python.">
+<style>
+  :root {
+    --bg: #0b0f17; --bg2: #121a28; --text: #eef2f8; --muted: #a8b3c7; --line: rgba(255,255,255,.12);
+    --glass: rgba(255,255,255,.06); --accent: #0a84ff; --accent2: #40e0ff; --ok: #34c759; --warn: #ffb340;
+    --radius: 22px;
+  }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f4f7fb; --bg2: #ffffff; --text: #0f1726; --muted: #4b5a73; --line: rgba(15,23,38,.12);
+            --glass: rgba(255,255,255,.75); }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; color: var(--text); background: var(--bg);
+    font: 16px/1.6 "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+    background-image: radial-gradient(1200px 600px at 80% -10%, rgba(10,132,255,.25), transparent 60%),
+                      radial-gradient(900px 500px at -10% 30%, rgba(64,224,255,.12), transparent 60%);
+    background-attachment: fixed;
+  }
+  a { color: var(--accent2); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+  header { padding: 72px 0 40px; display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items: center; }
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line);
+           background: var(--glass); color: var(--muted); font-size: 13px; backdrop-filter: blur(12px); }
+  h1 { font-size: clamp(32px, 5vw, 52px); line-height: 1.08; margin: 16px 0 14px; letter-spacing: -.02em; }
+  h1 span { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text;
+            background-clip: text; color: transparent; }
+  .lead { color: var(--muted); font-size: 18px; max-width: 560px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 28px 0 10px; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 24px; border-radius: 16px;
+         font-weight: 600; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease; }
+  .btn.primary { color: #fff; background: linear-gradient(135deg, #0a84ff, #2f6bff);
+                 box-shadow: 0 10px 30px rgba(10,132,255,.35), inset 0 1px 0 rgba(255,255,255,.35); }
+  .btn.primary:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(10,132,255,.45); }
+  .btn.ghost { color: var(--text); border: 1px solid var(--line); background: var(--glass); backdrop-filter: blur(12px); }
+  .fine { color: var(--muted); font-size: 13px; }
+  .glass { background: var(--glass); border: 1px solid var(--line); border-radius: var(--radius);
+           backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+           box-shadow: 0 20px 50px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.12); }
+  .demo { padding: 22px; position: relative; overflow: hidden; }
+  .island { margin: 0 auto 18px; width: max-content; max-width: 100%; display: flex; gap: 10px; align-items: center;
+            padding: 10px 18px; border-radius: 999px; background: rgba(8,10,14,.85); color: #fff; font-size: 14px;
+            border: 1px solid rgba(255,255,255,.15); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 10px var(--ok); }
+  .cmd { font-family: Consolas, "Cascadia Mono", monospace; background: rgba(0,0,0,.35); color: #fff;
+         padding: 2px 8px; border-radius: 8px; }
+  .gestures-mini { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .gestures-mini div { text-align: center; padding: 12px 6px; border-radius: 14px; background: rgba(255,255,255,.05);
+                       border: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+  .gestures-mini b { display: block; font-size: 26px; line-height: 1.2; }
+  section { padding: 36px 0; }
+  h2 { font-size: 28px; margin: 0 0 18px; letter-spacing: -.01em; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: s; }
+  .step { padding: 22px; }
+  .step::before { counter-increment: s; content: counter(s); display: grid; place-items: center; width: 34px; height: 34px;
+                  border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; margin-bottom: 10px; }
+  .step h3 { margin: 0 0 6px; font-size: 18px; }
+  .step p { margin: 0; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; }
+  td { padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td:first-child { width: 42%; white-space: nowrap; }
+  tr:last-child td { border-bottom: 0; }
+  .emoji { font-size: 20px; margin-right: 8px; }
+  details { padding: 16px 20px; margin-bottom: 12px; }
+  summary { cursor: pointer; font-weight: 600; }
+  details p { color: var(--muted); margin: 10px 0 0; }
+  .note { padding: 18px 22px; border-left: 4px solid var(--ok); }
+  footer { padding: 40px 0 60px; color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 16px;
+           justify-content: space-between; border-top: 1px solid var(--line); margin-top: 20px; }
+  @media (max-width: 820px) {
+    header { grid-template-columns: 1fr; padding-top: 40px; }
+    .steps { grid-template-columns: 1fr; }
+    td:first-child { white-space: normal; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <span class="badge">Plugin AutoCAD · Windows 10/11 · gratis &amp; open source</span>
+      <h1>Kendalikan <span>AutoCAD</span> dengan gerakan tangan</h1>
+      <p class="lead">Kamera laptop membaca tangan Anda untuk menggerakkan kursor, klik, memutar, menggeser, dan
+        men-zoom model 3D, serta membuka menu perintah. Tidak perlu memasang Python.</p>
+      <div class="cta">
+        <a class="btn primary" id="dl" href="https://github.com/naufaldm7-droid/Gesture-3D-View-/releases/latest/download/TCIGestureControl-Setup.exe">
+          ⬇&nbsp; Download untuk AutoCAD
+        </a>
+        <a class="btn ghost" href="https://github.com/naufaldm7-droid/Gesture-3D-View-">Kode sumber di GitHub</a>
+      </div>
+      <p class="fine">TCIGestureControl-Setup.exe · ~80 MB · AutoCAD 2021 atau lebih baru · versi terbaru otomatis</p>
+    </div>
+    <div class="glass demo" aria-hidden="true">
+      <div class="island"><span class="dot"></span>☝ Kursor · ketik <span class="cmd">GK</span> untuk nyala/mati</div>
+      <div class="gestures-mini">
+        <div><b>☝</b>kursor</div>
+        <div><b>🤏</b>klik</div>
+        <div><b>✊</b>orbit</div>
+        <div><b>✌</b>pan</div>
+        <div><b>🙌</b>putar 3D</div>
+        <div><b>🤙</b>menu</div>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <h2>Pasang dalam 3 langkah</h2>
+    <div class="steps">
+      <div class="glass step"><h3>Unduh &amp; jalankan</h3>
+        <p>Klik <b>Download</b>, lalu buka <b>TCIGestureControl-Setup.exe</b> → Next → Install. Tidak perlu hak admin.</p></div>
+      <div class="glass step"><h3>Buka AutoCAD</h3>
+        <p>Buka (atau mulai ulang) AutoCAD. Bila muncul peringatan keamanan untuk <i>TCIGestureControl.lsp</i>, pilih <b>Always Load</b>.</p></div>
+      <div class="glass step"><h3>Ketik <span class="cmd">GK</span></h3>
+        <p>Kamera gestur menyala. Ketik <span class="cmd">GK</span> lagi, atau klik ✕ Tutup, untuk mematikan.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Gestur</h2>
+    <div class="glass">
+      <table>
+        <tr><td><span class="emoji">☝</span>Telunjuk</td><td>Kursor seperti mouse: gerak pelan = presisi, cepat = jauh, diam = terkunci</td></tr>
+        <tr><td><span class="emoji">🤏</span>Jepit</td><td>Lepas = klik · geser = drag · tahan 0,8 detik = klik kanan</td></tr>
+        <tr><td><span class="emoji">✊</span> <span class="emoji">✌</span> <span class="emoji">🤟</span></td><td>Orbit · pan · zoom (naik/turun)</td></tr>
+        <tr><td><span class="emoji">✊✊</span>Dua kepalan</td><td>Putar tampilan 3D seperti memegang model; rentangkan tangan = zoom halus</td></tr>
+        <tr><td><span class="emoji">🤏🤏</span>Dua cubitan</td><td>Geser tampilan; rentangkan = zoom</td></tr>
+        <tr><td><span class="emoji">👍</span><span class="emoji">👎</span><span class="emoji">🤘</span>Tahan</td><td>Enter · Undo · Esc</td></tr>
+        <tr><td><span class="emoji">🤙</span>Tahan</td><td>Menu kaca berisi perintah: 2D, Solid, Edit, View, Window, dan lainnya</td></tr>
+        <tr><td><span class="emoji">🖐</span>Telapak</td><td>Berhenti, atau "angkat mouse" untuk memindah tangan</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Pertanyaan umum</h2>
+    <details class="glass"><summary>Windows menampilkan "Windows protected your PC"</summary>
+      <p>Penginstal belum bertanda tangan digital, jadi SmartScreen memperingatkan. Klik <b>More info</b> → <b>Run anyway</b>.
+         Kode sumbernya terbuka di GitHub untuk diperiksa siapa saja.</p></details>
+    <details class="glass"><summary>Overlay menulis "Kamera gelap / tertutup" atau "Tidak ada kamera asli"</summary>
+      <p>Kamera laptop sedang dimatikan oleh penutup atau tombol privasi (sering F8/F9 berikon kamera, atau pengaturan
+         Camera Privacy di aplikasi bawaan laptop), atau webcam USB tidak tersambung. Aktifkan kamera, lalu ketik GK dua kali.</p></details>
+    <details class="glass"><summary>Gerakan terasa lambat</summary>
+      <p>Lihat angka fps di kartu kamera. Di ruangan redup, webcam otomatis turun ke ~15 fps. Tambah cahaya dari arah depan.</p></details>
+    <details class="glass"><summary>Bagaimana cara melepas plugin?</summary>
+      <p>Settings → Apps → <b>TCI Gesture Control untuk AutoCAD</b> → Uninstall.</p></details>
+    <details class="glass"><summary>Bisa disetel kecepatannya?</summary>
+      <p>Bisa. Semua kecepatan dan ambang ada di <span class="cmd">config.json</span>; panduannya di
+         <a href="https://github.com/naufaldm7-droid/Gesture-3D-View-/blob/main/docs/tuning.md">docs/tuning.md</a>.</p></details>
+  </section>
+
+  <section>
+    <div class="glass note"><b>Privasi:</b> gambar kamera diproses hanya di komputer Anda. Tidak ada gambar atau data
+      yang dikirim ke internet.</div>
+  </section>
+
+  <footer>
+    <span>TCI Gesture Control · lisensi MIT</span>
+    <span><a href="https://github.com/naufaldm7-droid/Gesture-3D-View-/releases">Semua versi</a> ·
+          <a href="https://github.com/naufaldm7-droid/Gesture-3D-View-/issues">Laporkan masalah</a></span>
+  </footer>
+</div>
+</body>
+</html>

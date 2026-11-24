@@ -1,7 +1,7 @@
 {
   "_catatan": "Semua kunci yang diawali '_' diabaikan. Nilai yang dihapus kembali ke bawaan di gesture_cad/config.py. Cek perubahan dengan: python -m gesture_cad --check",
 
-  "camera": {"index": 0, "width": 640, "height": 480, "fps": 30, "backend": "dshow", "fourcc": "MJPG", "mirror": true},
+  "camera": {"index": "auto", "width": 640, "height": 480, "fps": 30, "backend": "dshow", "fourcc": "MJPG", "mirror": true},
 
   "hand": {"dominant": "Right", "fallback_any": true},
 

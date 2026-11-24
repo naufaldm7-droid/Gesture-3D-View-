@@ -1,9 +1,14 @@
-# Menyetel config_sketchup.json
+# Menyetel config.json (AutoCAD)
 
-Ubah **satu nilai** setiap kali, lalu mulai ulang aplikasi (tombol toolbar 2×: mati, lalu nyala) dan minta
-pengguna mencoba lagi. Cek format dengan `--config config_sketchup.json --check`.
+Lokasi `config.json`:
+- **Plugin:** `%APPDATA%\Autodesk\ApplicationPlugins\TCIGestureControl.bundle\Contents\app\config.json`
+- **Kode sumber:** di folder repo.
 
-| Gejala yang dikatakan pengguna | Kunci | Bawaan | Arah |
+Ubah **satu nilai** setiap kali, lalu mulai ulang dengan mengetik `GK` dua kali (mati, lalu nyala). Kalau
+memakai kode sumber, cek formatnya dengan `python -m gesture_cad --check`. Nilai yang tidak ditulis di
+`config.json` memakai bawaan `gesture_cad/config.py`.
+
+| Gejala | Kunci | Bawaan | Arah |
 |---|---|---|---|
 | "licin", kursor meluncur saat pelan | `pointer.gain_slow` | 0.6 | turun (0.45) |
 | kursor lambat menyeberang layar | `pointer.gain_fast` | 2.4 | naik (2.8) |
@@ -16,13 +21,13 @@ pengguna mencoba lagi. Cek format dengan `--config config_sketchup.json --check`
 | perintah (👍 👎 🤘) tertembak tak sengaja | `timing.hold_ms` | 600 | naik (800) |
 | orbit/pan satu tangan terlalu cepat | `motion.orbit_gain_px`, `motion.pan_gain_px` | 1100, 1400 | turun |
 | zoom tiga jari terlalu peka | `motion.zoom_step` | 0.05 | naik |
-| dua tangan memutar terlalu cepat | `two_hand.camera_orbit_gain` | 3.0 | turun (2.0) |
-| dua tangan terasa terbalik | `two_hand.camera_invert_x` / `camera_invert_y` | false | true |
-| zoom dua tangan terlalu peka | `two_hand.camera_zoom_gain` | 1.0 | turun (0.6) |
-| geser dua cubitan terlalu cepat | `two_hand.camera_pan_gain` | 1.5 | turun |
+| dua tangan: zoom kurang halus | `two_hand.zoomfactor` | 20 | turun (10–15) |
+| dua tangan: rentang terlalu peka | `two_hand.view_zoom_step` | 0.035 | naik |
+| dua tangan: setir terlalu peka | `two_hand.view_twist_gain` | 0.25 | turun |
+| dua kepalan sebaiknya memindah objek terpilih | `two_hand.grab_selected_objects` | false | true |
 | pengguna kidal | `hand.dominant` | "Right" | "Left" |
 | fps rendah (kartu kamera <20) | ruangan redup | – | tambah cahaya dari depan; cek `camera.fourcc = "MJPG"` |
-| "geser tangan ke tengah" terus muncul | tangan terlalu dekat tepi kamera | – | posisikan laptop / layar lebih tegak |
+| "geser tangan ke tengah" terus muncul | tangan terlalu dekat tepi kamera | – | layar laptop lebih tegak |
 
-Untuk menambah atau mengubah isi menu, edit `menu.pages[*].items`. Untuk perintah suara, edit
-`voice.commands[*]` (`say` = frasa bahasa Inggris). Batasnya: label maksimal 14 huruf dan 16 item per halaman.
+Isi menu kaca ada di `menu.pages[*].items`. Bentuk itemnya `{"label": "LINE", "cmd": "_LINE"}` atau
+`{"label": "ORTHO", "key": "F8"}`, dengan label maksimal 14 huruf dan 16 item per halaman.

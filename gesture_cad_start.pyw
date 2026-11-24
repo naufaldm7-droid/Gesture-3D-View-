@@ -10,24 +10,40 @@ import sys
 import tempfile
 import traceback
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
+os.environ.setdefault("MPLBACKEND", "Agg")  # mediapipe mengimpor matplotlib; jangan sampai membuka GUI Tk
+FROZEN = getattr(sys, "frozen", False)  # GestureControl.exe (PyInstaller)
+HERE = os.path.dirname(os.path.abspath(sys.executable if FROZEN else __file__))
+if not FROZEN:
+    sys.path.insert(0, HERE)
 os.chdir(HERE)
 
 MUTEX = "Local\\TCI_GestureCAD_SingleInstance"
 STOP_FLAG = os.path.join(tempfile.gettempdir(), "tci_gesture_cad.stop")
 ERROR_ALREADY_EXISTS = 183
+# Perintah diagnosa tidak ikut aturan nyala/mati (tidak boleh mematikan sesi yang sedang dipakai)
+DIAG = ("--check", "--download-model", "--download-voice-model", "--verify-sketchup", "--bench")
+diag = any(a in DIAG for a in sys.argv[1:])
 
 kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
 kernel32.CreateMutexW.restype = ctypes.c_void_p
-handle = kernel32.CreateMutexW(None, False, MUTEX)
-if ctypes.get_last_error() == ERROR_ALREADY_EXISTS:
-    open(STOP_FLAG, "w").close()   # instance lain melihat file ini dalam <0,5 detik lalu berhenti
-    sys.exit(0)
+if not diag:
+    handle = kernel32.CreateMutexW(None, False, MUTEX)
+    if ctypes.get_last_error() == ERROR_ALREADY_EXISTS:
+        open(STOP_FLAG, "w").close()   # instance lain melihat file ini dalam <0,5 detik lalu berhenti
+        sys.exit(0)
+    # Kita pemilik kunci: bersihkan sinyal basi SEKARANG (bukan setelah kamera & UI siap), supaya perintah
+    # "matikan" yang datang selagi aplikasi masih memuat tidak ikut terhapus (race pada peluncuran pertama
+    # exe yang lambat karena dipindai antivirus).
+    try:
+        os.remove(STOP_FLAG)
+    except OSError:
+        pass
+    os.environ["TCI_GC_LAUNCHER"] = "1"
 
 logdir = os.path.join(os.environ.get("LOCALAPPDATA", tempfile.gettempdir()), "TCI_GestureCAD")
 os.makedirs(logdir, exist_ok=True)
-log = open(os.path.join(logdir, "gesture_cad.log"), "w", encoding="utf-8", buffering=1)
+log = open(os.path.join(logdir, "gesture_cad_diag.log" if diag else "gesture_cad.log"), "w",
+           encoding="utf-8", buffering=1)
 sys.stdout = sys.stderr = log
 
 try:
