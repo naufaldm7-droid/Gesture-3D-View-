@@ -1,0 +1,12 @@
+# Lingkungan & unduhan (dibuat oleh siapkan.bat)
+.venv/
+models/
+latihan/
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+# Lain-lain
+dist/
+Thumbs.db
+desktop.ini

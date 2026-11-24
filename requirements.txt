@@ -1,0 +1,7 @@
+mediapipe>=1.2
+opencv-python>=4.8
+numpy>=1.26
+pywin32>=306
+pillow>=10
+pytest>=8
+# Opsional (asisten suara offline): pip install vosk  lalu  python -m gesture_cad --download-voice-model
