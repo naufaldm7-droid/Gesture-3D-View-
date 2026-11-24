@@ -50,13 +50,15 @@
     <div class="wrap">
       <div class="left narrow reveal">
         <span class="eyebrow">Plugin AutoCAD · gratis · Windows 10/11</span>
-        <h1 class="title gold"><small>Kerajaan</small>Gesture Control</h1>
+        <h1 class="title gold">Gesture Control</h1>
         <p class="lead">Gerakkan tangan di depan kamera laptop, dan AutoCAD ikut bergerak. Kursor, klik, putar model 3D,
           geser, sampai zoom, semuanya cukup pakai tangan. Mouse-nya boleh istirahat dulu.</p>
 
         <div class="forge" id="forge">
           <canvas class="wall" id="wall" aria-hidden="true"></canvas>
           <div class="slot-glow" id="slotGlow"></div>
+          <svg class="guide" id="guide" aria-hidden="true"><defs><marker id="gHead" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#ffd27a"/></marker></defs><path id="guidePath" d="" marker-end="url(#gHead)"/></svg>
+          <div class="brick-call" id="brickCall" aria-hidden="true"><b>Ambil bata ini</b><span>seret ke lubang di dinding</span></div>
           <a class="keybrick" id="dl" draggable="false" aria-label="Download Gesture Control untuk AutoCAD"
              href="https://github.com/naufaldm7-droid/Gesture-3D-View-/releases/latest/download/GestureControl-Setup.exe">
             <canvas id="brickCanvas" aria-hidden="true"></canvas>
@@ -64,7 +66,7 @@
           </a>
         </div>
         <p class="hint">
-          <span id="forgeHint">Ada satu bata yang belum terpasang. Geser bata di atas dinding ke lubangnya, nanti tombol unduhnya muncul.</span>
+          <span id="forgeHint">Pasang bata yang menyala ke lubang di dinding, tombol unduhnya muncul di bata itu.</span>
           <button class="btn ghost" id="autoPlace" type="button">Pasangkan saja</button>
           <span class="found-pill" id="foundPill">Bata terpasang. Silakan unduh!</span>
         </p>
@@ -94,8 +96,8 @@
             <p>Waktu presentasi ke klien atau rapat koordinasi, Anda bisa berdiri di depan layar tanpa bolak-balik ke meja.
               Di direksi keet, saat tangan masih pegang gambar kerja, model tetap bisa diputar.</p></div>
           <div class="fact"><h3>Nanti ke depannya</h3>
-            <p>Rencananya menyusul untuk SketchUp, Revit, dan Tekla. Perintah suara juga sedang disiapkan, plus gestur yang
-              bisa diatur sesuka Anda.</p></div>
+            <p>SketchUp lagi diuji, Revit menyusul. Perintah suara dan gestur yang bisa diatur sendiri juga sedang
+              disiapkan. Civil 3D, Navisworks, Rhino, dan Blender masih di daftar keinginan.</p></div>
         </div>
         <blockquote class="jest">Tapi jujur saja, kegunaan utamanya: senam tangan buat drafter. Setelah delapan jam
           menggenggam mouse, pergelangan Anda akhirnya punya alasan buat bergerak. Efek sampingnya, rekan kerja bakal
@@ -144,48 +146,59 @@
       <h2 class="gold reveal">Menara Plugin</h2>
       <p class="sub reveal">Baru satu yang terbuka. Sisanya masih dikunci, sabar ya.</p>
       <div class="windows">
-        <article class="panel window reveal">
+        <article class="panel window open reveal">
           <div class="bar"><i></i><i></i><i></i><span>AUTOCAD</span></div>
           <div class="body">
-            <span class="status ok">Sudah bisa dipakai · v1.0</span>
-            <h3>Gesture Control untuk AutoCAD</h3>
-            <ul><li>Kursor, klik, drag</li><li>Putar, geser, zoom 3D</li><li>Menu perintah 7 halaman</li></ul>
+            <div>
+              <span class="status ok">Sudah bisa dipakai · v1.0</span>
+              <h3>Gesture Control untuk AutoCAD</h3>
+              <ul><li>Kursor, klik, drag</li><li>Putar, geser, zoom 3D</li><li>Menu perintah 7 halaman</li></ul>
+            </div>
             <a class="btn gem" href="https://github.com/naufaldm7-droid/Gesture-3D-View-/releases/latest/download/GestureControl-Setup.exe">Unduh</a>
           </div>
         </article>
-        <article class="panel window locked reveal d1" tabindex="0" role="button" data-name="SketchUp" aria-label="SketchUp: masih terkunci, sedang diuji">
-          <div class="bar"><i></i><i></i><i></i><span>SKETCHUP</span></div>
-          <div class="body">
-            <div class="content">
-              <span class="status soon">Sedang diuji</span>
-              <h3>Gesture Control untuk SketchUp</h3>
-              <ul><li>Kamera langsung lewat ekstensi</li><li>Alat SketchUp di menu</li></ul>
-            </div>
-            <div class="lock"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M15 21v-6a9 9 0 0118 0v6" fill="none" stroke="#e0a94a" stroke-width="4" stroke-linecap="round"/><rect x="9" y="21" width="30" height="22" rx="4" fill="#e0a94a" stroke="#ffe7a8" stroke-width="1.5"/><circle cx="24" cy="31" r="3" fill="#3a2008"/><path d="M24 33v5" stroke="#3a2008" stroke-width="3" stroke-linecap="round"/></svg>TERKUNCI</div>
-          </div>
-        </article>
-        <article class="panel window locked reveal d2" tabindex="0" role="button" data-name="Revit" aria-label="Revit: masih terkunci, direncanakan">
-          <div class="bar"><i></i><i></i><i></i><span>REVIT</span></div>
-          <div class="body">
-            <div class="content">
-              <span class="status plan">Direncanakan</span>
-              <h3>Gesture Control untuk Revit</h3>
-              <ul><li>Navigasi 3D view</li><li>Perintah ribbon di menu</li></ul>
-            </div>
-            <div class="lock"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M15 21v-6a9 9 0 0118 0v6" fill="none" stroke="#e0a94a" stroke-width="4" stroke-linecap="round"/><rect x="9" y="21" width="30" height="22" rx="4" fill="#e0a94a" stroke="#ffe7a8" stroke-width="1.5"/><circle cx="24" cy="31" r="3" fill="#3a2008"/><path d="M24 33v5" stroke="#3a2008" stroke-width="3" stroke-linecap="round"/></svg>TERKUNCI</div>
-          </div>
-        </article>
-        <article class="panel window locked reveal d3" tabindex="0" role="button" data-name="Tekla" aria-label="Tekla: masih terkunci, direncanakan">
-          <div class="bar"><i></i><i></i><i></i><span>TEKLA</span></div>
-          <div class="body">
-            <div class="content">
-              <span class="status plan">Direncanakan</span>
-              <h3>Gesture Control untuk Tekla</h3>
-              <ul><li>Putar model baja</li><li>Pilih kepingan dengan jepitan</li></ul>
-            </div>
-            <div class="lock"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M15 21v-6a9 9 0 0118 0v6" fill="none" stroke="#e0a94a" stroke-width="4" stroke-linecap="round"/><rect x="9" y="21" width="30" height="22" rx="4" fill="#e0a94a" stroke="#ffe7a8" stroke-width="1.5"/><circle cx="24" cy="31" r="3" fill="#3a2008"/><path d="M24 33v5" stroke="#3a2008" stroke-width="3" stroke-linecap="round"/></svg>TERKUNCI</div>
-          </div>
-        </article>
+        <div class="vaults">
+          <article class="panel vault locked reveal d0" tabindex="0" role="button" data-name="SketchUp" aria-label="SketchUp: masih terkunci, sedang diuji">
+            <span class="seal" aria-hidden="true">Su</span>
+            <div class="vtext"><h3>SketchUp</h3><span class="status soon">Sedang diuji</span><p>Kamera langsung lewat ekstensi, alat SketchUp di menu gestur.</p></div>
+            <svg class="padlock" viewBox="0 0 48 48" aria-hidden="true"><path d="M15 21v-6a9 9 0 0118 0v6" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><rect x="9" y="21" width="30" height="22" rx="4" fill="currentColor"/><circle cx="24" cy="31" r="3" fill="#1a0f08"/><path d="M24 33v5" stroke="#1a0f08" stroke-width="3" stroke-linecap="round"/></svg>
+          </article>
+          <article class="panel vault locked reveal d1" tabindex="0" role="button" data-name="Revit" aria-label="Revit: masih terkunci, direncanakan">
+            <span class="seal" aria-hidden="true">Rv</span>
+            <div class="vtext"><h3>Revit</h3><span class="status plan">Direncanakan</span><p>Keliling 3D view dan panggil perintah ribbon tanpa mouse.</p></div>
+            <svg class="padlock" viewBox="0 0 48 48" aria-hidden="true"><path d="M15 21v-6a9 9 0 0118 0v6" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><rect x="9" y="21" width="30" height="22" rx="4" fill="currentColor"/><circle cx="24" cy="31" r="3" fill="#1a0f08"/><path d="M24 33v5" stroke="#1a0f08" stroke-width="3" stroke-linecap="round"/></svg>
+          </article>
+          <article class="panel vault locked reveal d2" tabindex="0" role="button" data-name="Perintah Suara" aria-label="Perintah Suara: masih terkunci, direncanakan">
+            <span class="seal" aria-hidden="true">🎙</span>
+            <div class="vtext"><h3>Perintah Suara</h3><span class="status plan">Direncanakan</span><p>Bilang "line", "offset", atau "undo", AutoCAD langsung nurut.</p></div>
+            <svg class="padlock" viewBox="0 0 48 48" aria-hidden="true"><path d="M15 21v-6a9 9 0 0118 0v6" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><rect x="9" y="21" width="30" height="22" rx="4" fill="currentColor"/><circle cx="24" cy="31" r="3" fill="#1a0f08"/><path d="M24 33v5" stroke="#1a0f08" stroke-width="3" stroke-linecap="round"/></svg>
+          </article>
+          <article class="panel vault locked reveal d3" tabindex="0" role="button" data-name="Gestur Racikan" aria-label="Gestur Racikan: masih terkunci, direncanakan">
+            <span class="seal" aria-hidden="true">✋</span>
+            <div class="vtext"><h3>Gestur Racikan</h3><span class="status plan">Direncanakan</span><p>Atur sendiri gerakan mana buat perintah apa, sesuai kebiasaan tangan Anda.</p></div>
+            <svg class="padlock" viewBox="0 0 48 48" aria-hidden="true"><path d="M15 21v-6a9 9 0 0118 0v6" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><rect x="9" y="21" width="30" height="22" rx="4" fill="currentColor"/><circle cx="24" cy="31" r="3" fill="#1a0f08"/><path d="M24 33v5" stroke="#1a0f08" stroke-width="3" stroke-linecap="round"/></svg>
+          </article>
+          <article class="panel vault locked reveal d0" tabindex="0" role="button" data-name="Civil 3D" aria-label="Civil 3D: masih terkunci, masih wacana">
+            <span class="seal" aria-hidden="true">C3</span>
+            <div class="vtext"><h3>Civil 3D</h3><span class="status idea">Masih wacana</span><p>Geser trase jalan dan kontur sambil berdiri di depan layar.</p></div>
+            <svg class="padlock" viewBox="0 0 48 48" aria-hidden="true"><path d="M15 21v-6a9 9 0 0118 0v6" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><rect x="9" y="21" width="30" height="22" rx="4" fill="currentColor"/><circle cx="24" cy="31" r="3" fill="#1a0f08"/><path d="M24 33v5" stroke="#1a0f08" stroke-width="3" stroke-linecap="round"/></svg>
+          </article>
+          <article class="panel vault locked reveal d1" tabindex="0" role="button" data-name="Navisworks" aria-label="Navisworks: masih terkunci, masih wacana">
+            <span class="seal" aria-hidden="true">Nw</span>
+            <div class="vtext"><h3>Navisworks</h3><span class="status idea">Masih wacana</span><p>Jalan-jalan di model gabungan waktu rapat clash.</p></div>
+            <svg class="padlock" viewBox="0 0 48 48" aria-hidden="true"><path d="M15 21v-6a9 9 0 0118 0v6" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><rect x="9" y="21" width="30" height="22" rx="4" fill="currentColor"/><circle cx="24" cy="31" r="3" fill="#1a0f08"/><path d="M24 33v5" stroke="#1a0f08" stroke-width="3" stroke-linecap="round"/></svg>
+          </article>
+          <article class="panel vault locked reveal d2" tabindex="0" role="button" data-name="Rhino" aria-label="Rhino: masih terkunci, masih wacana">
+            <span class="seal" aria-hidden="true">Rh</span>
+            <div class="vtext"><h3>Rhino</h3><span class="status idea">Masih wacana</span><p>Putar bentuk bebas pakai dua kepalan.</p></div>
+            <svg class="padlock" viewBox="0 0 48 48" aria-hidden="true"><path d="M15 21v-6a9 9 0 0118 0v6" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><rect x="9" y="21" width="30" height="22" rx="4" fill="currentColor"/><circle cx="24" cy="31" r="3" fill="#1a0f08"/><path d="M24 33v5" stroke="#1a0f08" stroke-width="3" stroke-linecap="round"/></svg>
+          </article>
+          <article class="panel vault locked reveal d3" tabindex="0" role="button" data-name="Blender" aria-label="Blender: masih terkunci, masih wacana">
+            <span class="seal" aria-hidden="true">Bl</span>
+            <div class="vtext"><h3>Blender</h3><span class="status idea">Masih wacana</span><p>Orbit viewport tanpa tombol tengah mouse.</p></div>
+            <svg class="padlock" viewBox="0 0 48 48" aria-hidden="true"><path d="M15 21v-6a9 9 0 0118 0v6" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><rect x="9" y="21" width="30" height="22" rx="4" fill="currentColor"/><circle cx="24" cy="31" r="3" fill="#1a0f08"/><path d="M24 33v5" stroke="#1a0f08" stroke-width="3" stroke-linecap="round"/></svg>
+          </article>
+        </div>
       </div>
     </div>
   </section>
@@ -215,25 +228,14 @@
 
   <section id="apresiasi">
     <div class="wrap">
-      <div class="panel royal appreciate reveal">
-        <span class="banner l" aria-hidden="true"></span><span class="banner r" aria-hidden="true"></span>
-        <div>
-          <h2 class="gold">Traktir Penempanya</h2>
-          <div class="rule" aria-hidden="true"></div>
-          <p>Plugin ini gratis, dan akan tetap gratis. Kalau ternyata membantu kerjaan Anda, boleh banget kirim apresiasi
-            seikhlasnya. Lumayan buat kopi sambil menempa menara berikutnya.</p>
-          <div class="wallets"><span class="chip">GoPay</span><span class="chip">ShopeePay</span><span class="chip">DANA</span><span class="chip">OVO</span><span class="chip">BNI &amp; m-banking lain</span></div>
-          <p>Bisa dibayar pakai aplikasi apa saja yang mendukung QRIS. Kalau bukanya dari HP, simpan gambarnya, lalu pilih
-            <i>scan dari galeri</i> di aplikasi Anda. Jangan lupa cek nama penerimanya sebelum bayar, ya.</p>
-          <p class="fine">Sepenuhnya sukarela. Nggak ada fitur yang dikunci.</p>
+      <figure class="qris-altar reveal" id="qris" data-qris="assets/qris.webp">
+        <div class="qris-frame">
+          <img alt="QRIS apresiasi" width="1129" height="1600" decoding="async">
+          <div class="qris-empty">QRIS</div>
         </div>
-        <!-- Isi data-qris dengan "assets/qris.png" setelah gambar QRIS ditaruh di docs/assets/. -->
-        <figure class="qris-frame" id="qris" data-qris="" style="margin:0">
-          <img alt="Kode QRIS untuk apresiasi" width="600" height="600">
-          <div class="qris-empty">QRIS segera dipasang<small>Kode pembayarannya lagi disiapkan.</small></div>
-          <a class="save" href="#apresiasi" download="QRIS-Gesture-Control.png">Simpan gambar QRIS</a>
-        </figure>
-      </div>
+        <figcaption>Plugin ini gratis, dan akan tetap gratis. Kalau ternyata membantu kerjaan Anda, boleh banget kirim
+          apresiasi seikhlasnya. Lumayan buat kopi sambil menempa menara berikutnya.</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -248,7 +250,7 @@
 
 <footer>
   <div class="wrap">
-    <span>Gesture Control · lisensi MIT</span>
+    <span>© 2026 @nrozan · Gesture Control · lisensi MIT</span>
     <span><a href="https://github.com/naufaldm7-droid/Gesture-3D-View-">Kode sumber</a> ·
       <a href="https://github.com/naufaldm7-droid/Gesture-3D-View-/releases">Semua versi</a> ·
       <a href="https://github.com/naufaldm7-droid/Gesture-3D-View-/issues">Laporkan masalah</a></span>

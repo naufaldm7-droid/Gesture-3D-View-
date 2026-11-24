@@ -63,49 +63,50 @@ function moss(ctx, x, y, w, rnd) {
   }
 }
 
-// L = panjang satu bata, H = tinggi satu baris. Kembalikan ukuran, lubang (slot), dan posisi bata kunci tergeletak.
+// L = panjang satu bata, H = tinggi satu baris. Dinding rapi 4 baris dengan satu lubang; bata kunci tergeletak
+// di tanah di bawah dinding. Kembalikan ukuran, lubang (slot), dan posisi bata tergeletak.
 export function drawWall(cv, L, H, dpr, seed = 7) {
   const rnd = mulberry32(seed);
-  const W = 4 * L, Hc = Math.round(4 * H + H * 0.25);
+  const W = 4 * L;
+  const wallH = 4 * H;
+  const groundY = wallH + H * 0.55; // garis tanah tempat bata tergeletak
+  const Hc = Math.round(groundY + H * 0.35);
   const m = Math.max(2.5, L * 0.035);
   cv.width = Math.round(W * dpr);
   cv.height = Math.round(Hc * dpr);
   const ctx = cv.getContext('2d');
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, W, Hc);
-  const top = H * 0.25; // ruang di atas baris rusak
-  const slot = { x: L / 2, y: top + 2 * H, w: 2 * L, h: H };
-  // adukan di belakang baris penuh + baris atas yang rusak
-  mortar(ctx, 0, top + H, W, 3 * H, rnd);
-  mortar(ctx, 0, top, L * 1.95, H, rnd);
+  const slot = { x: L, y: H, w: 2 * L, h: H };
+  mortar(ctx, 0, 0, W, wallH, rnd);
   // lubang: ceruk gelap dengan bayangan dalam
   const g = ctx.createLinearGradient(0, slot.y, 0, slot.y + slot.h);
-  g.addColorStop(0, '#050302'); g.addColorStop(1, '#1d130e');
+  g.addColorStop(0, '#030201'); g.addColorStop(1, '#170f0b');
   ctx.fillStyle = g;
   ctx.fillRect(slot.x + m / 2, slot.y + m / 2, slot.w - m, slot.h - m);
-  ctx.fillStyle = 'rgba(0,0,0,.6)';
-  ctx.fillRect(slot.x + m / 2, slot.y + m / 2, slot.w - m, H * 0.18);
-  // baris bata
+  ctx.fillStyle = 'rgba(0,0,0,.65)';
+  ctx.fillRect(slot.x + m / 2, slot.y + m / 2, slot.w - m, H * 0.2);
   for (let row = 0; row < 4; row++) {
-    const y = top + row * H;
+    const y = row * H;
     const off = row % 2 === 0 ? L / 2 : 0;
     for (let x = -off; x < W; x += L) {
       const x0 = Math.max(0, x), x1 = Math.min(W, x + L);
-      if (row === 2 && (Math.abs(x - L / 2) < 1 || Math.abs(x - 1.5 * L) < 1)) continue; // lubang
-      if (row === 0 && x0 >= L * 1.5) {
-        if (x0 < L * 1.6) paintBrick(ctx, x0 + m / 2, y + m / 2 + H * 0.12, L * 0.42, H - m - H * 0.12, rnd); // pecahan
-        continue;
-      }
+      if (row === 1 && x0 >= L - 1 && x1 <= 3 * L + 1) continue; // lubang (dua bata di baris kedua)
       paintBrick(ctx, x0 + m / 2, y + m / 2, x1 - x0 - m, H - m, rnd);
     }
   }
-  moss(ctx, 0, top - 2, L * 1.9, rnd);
-  moss(ctx, L * 1.9, top + H - 3, W - L * 1.9, rnd);
+  moss(ctx, 0, -1, W, rnd);
   const kw = slot.w - m, kh = slot.h - m;
+  // tanah & bayangan tempat bata tergeletak
+  const rx = W - kw - L * 0.12;
+  const sh = ctx.createRadialGradient(rx + kw / 2, groundY, 2, rx + kw / 2, groundY, kw * 0.62);
+  sh.addColorStop(0, 'rgba(0,0,0,.55)'); sh.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = sh;
+  ctx.fillRect(rx - kw * 0.2, groundY - H * 0.5, kw * 1.4, H);
   return {
     W, Hc, L, H, m,
     slot: { x: slot.x + m / 2, y: slot.y + m / 2, w: kw, h: kh },
-    rest: { x: W - kw - L * 0.04, y: top + H - kh - 1, rot: -2.5 },
+    rest: { x: rx, y: groundY - kh, rot: -1.5 },
   };
 }
 
@@ -117,9 +118,9 @@ export function drawKeyBrick(cv, w, h, dpr) {
   const ctx = cv.getContext('2d');
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, w, h);
-  paintBrick(ctx, 0, 0, w, h, rnd, [118, 62, 40]);
+  paintBrick(ctx, 0, 0, w, h, rnd, [176, 98, 50]);
   ctx.save();
-  ctx.strokeStyle = 'rgba(255,190,110,.35)';
+  ctx.strokeStyle = 'rgba(255,214,140,.75)';
   ctx.lineWidth = 1.2;
   ctx.lineCap = 'round';
   for (const cx of [h * 0.6, w - h * 0.6]) {

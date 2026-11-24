@@ -1,6 +1,6 @@
 // Perilaku halaman: tirai pembuka, teka-teki bata kunci, gulir halus, muncul saat digulir, menara terkunci,
 // QRIS, tooltip. Adegan 3D dimuat terpisah (kingdom.js); bila gagal, halaman tetap utuh tanpa 3D.
-import { cloudCanvas, DUSK } from './cloud.js';
+import { noiseCloud, DARK_PAL } from './cloud.js';
 import { drawWall, drawKeyBrick } from './brick.js';
 
 const html = document.documentElement;
@@ -29,7 +29,7 @@ if (reduced) {
   veilOpened = true;
 } else {
   [11, 23, 37, 41, 53, 67].forEach((seed, i) => {
-    const c = cloudCanvas(900, 520, seed, DUSK);
+    const c = noiseCloud(300, 170, seed, DARK_PAL);
     c.className = 'v' + (i + 1);
     veil.appendChild(c);
   });
@@ -133,10 +133,21 @@ function layoutForge(force) {
   brick.style.height = s.h + 'px';
   drawKeyBrick(brickCv, s.w, s.h, dpr);
   Object.assign(slotGlow.style, { left: s.x + 'px', top: s.y + 'px', width: s.w + 'px', height: s.h + 'px' });
-  brick.style.setProperty('--lf', clamp(Math.round(s.h * 0.36), 11, 15) + 'px');
-  $('#dlText').textContent = s.w >= 215 ? 'Download untuk AutoCAD' : 'Unduh';
+  brick.style.setProperty('--lf', clamp(Math.round(s.h * 0.4), 12, 18) + 'px');
+  $('#dlText').textContent = s.w >= 150 ? 'Download' : 'Unduh';
   brick.classList.remove('anim');
   if (placed) setPos(s.x, s.y, 0); else setPos(geo.rest.x, geo.rest.y, geo.rest.rot);
+  // panah petunjuk dari bata tergeletak ke lubang, dan balon perintah di sebelah kiri bata
+  const r = geo.rest;
+  const guide = $('#guide');
+  guide.setAttribute('width', geo.W);
+  guide.setAttribute('height', geo.Hc);
+  guide.setAttribute('viewBox', `0 0 ${geo.W} ${geo.Hc}`);
+  const x0 = r.x + s.w * 0.5, y0 = r.y - 4;
+  const x1 = s.x + s.w * 0.5, y1 = s.y + s.h + 6;
+  $('#guidePath').setAttribute('d', `M${x0},${y0} Q${x0 + geo.L * 0.2},${(y0 + y1) / 2} ${x1 + geo.L * 0.25},${y1}`);
+  Object.assign($('#brickCall').style, { left: '0px', top: r.y - 4 + 'px', width: Math.max(96, r.x - 14) + 'px', minHeight: s.h + 8 + 'px' });
+  forge.classList.toggle('tight', r.x < 150);
 }
 function nearSlot() {
   const s = geo.slot;
@@ -163,6 +174,7 @@ function place() {
   if (placed || !geo) return;
   placed = true;
   forge.classList.remove('near');
+  forge.classList.add('done');
   brick.classList.add('anim');
   setPos(geo.slot.x, geo.slot.y, 0);
   setTimeout(() => {
@@ -184,6 +196,7 @@ brick.addEventListener('pointerdown', (e) => {
   brick.setPointerCapture(e.pointerId);
   brick.classList.remove('anim');
   brick.classList.add('drag');
+  forge.classList.add('busy');
   drag = { ox: e.clientX - pos.x, oy: e.clientY - pos.y };
 });
 brick.addEventListener('pointermove', (e) => {
@@ -198,6 +211,7 @@ const endDrag = (e) => {
   drag = null;
   setTimeout(() => { swallowClick = false; }, 400);
   brick.classList.remove('drag');
+  forge.classList.remove('busy');
   if (brick.hasPointerCapture(e.pointerId)) brick.releasePointerCapture(e.pointerId);
   if (nearSlot()) { place(); return; }
   forge.classList.remove('near');
@@ -220,7 +234,7 @@ let rsT = 0;
 addEventListener('resize', () => { clearTimeout(rsT); rsT = setTimeout(() => layoutForge(false), 120); });
 
 // ------------------------------------------------------------------ menara terkunci
-$$('.window.locked').forEach((w) => {
+$$('.locked').forEach((w) => {
   const open = () => {
     w.classList.remove('shake');
     void w.offsetWidth;
@@ -238,7 +252,6 @@ if (qsrc) {
   const img = qris.querySelector('img');
   img.addEventListener('error', () => qris.classList.add('empty'));
   img.src = qsrc;
-  qris.querySelector('.save').href = qsrc;
 } else {
   qris.classList.add('empty');
 }
