@@ -128,7 +128,7 @@ def doctor(cfg):
     if cfg["host"]["name"] == "sketchup":
         return bad + doctor_sketchup(cfg)
     if getattr(sys, "frozen", False):
-        _p("perintah GESTURE/KAMERA : dari plugin TCIGestureControl.bundle (ApplicationPlugins)")
+        _p("perintah GESTURE/KAMERA : dari plugin GestureControl.bundle (ApplicationPlugins)")
     else:
         bad += _doctor_pgp()
     return bad + _doctor_autocad(cfg)
@@ -230,7 +230,7 @@ def verify_sketchup(cfg):
             break
         time.sleep(0.1)
     if not link.connected:
-        _p("Jembatan SketchUp belum tersambung. Buka SketchUp dulu (ekstensi TCI Gesture Control aktif).")
+        _p("Jembatan SketchUp belum tersambung. Buka SketchUp dulu (ekstensi Gesture Control aktif).")
         link.stop()
         return 1
     _p("SketchUp %s. Menguji %d aksi aman (tool & tampilan akan berganti-ganti sebentar)..."
@@ -253,7 +253,7 @@ def verify_sketchup(cfg):
     return 1 if failed else 0
 
 
-STOP_FLAG = os.path.join(tempfile.gettempdir(), "tci_gesture_cad.stop")
+STOP_FLAG = os.path.join(tempfile.gettempdir(), "gesture_control.stop")
 
 
 class FrameGrabber(threading.Thread):
@@ -445,7 +445,7 @@ def run(cfg, args):
     show_help = bool(cfg["hud"]["show_help"])
     mirror = bool(cfg["camera"]["mirror"])
     targets = [n.lower() for n in cfg["output"]["target_processes"]]
-    if not os.environ.get("TCI_GC_LAUNCHER"):  # lewat peluncur: sinyal basi sudah dibersihkan saat kunci diambil
+    if not os.environ.get("GC_LAUNCHER"):  # lewat peluncur: sinyal basi sudah dibersihkan saat kunci diambil
         try:
             os.remove(STOP_FLAG)
         except OSError:

@@ -1,14 +1,14 @@
-"""Bangun plugin AutoCAD siap-pasang: GestureControl.exe (tanpa Python) di dalam TCIGestureControl.bundle.
+"""Bangun plugin AutoCAD siap-pasang: GestureControl.exe (tanpa Python) di dalam GestureControl.bundle.
 
     .venv\\Scripts\\python.exe buat_plugin_autocad.py
 
 Hasil:
-  plugin_build/TCIGestureControl.bundle/                  plugin Autodesk (autoloader ApplicationPlugins)
+  plugin_build/GestureControl.bundle/                  plugin Autodesk (autoloader ApplicationPlugins)
       PackageContents.xml
-      Contents/TCIGestureControl.lsp                      perintah GK / GESTURE / KAMERA
+      Contents/GestureControl.lsp                      perintah GK / GESTURE / KAMERA
       Contents/app/GestureControl.exe (+ _internal/)       mesin gestur beku (PyInstaller)
       Contents/app/config.json, models/hand_landmarker.task, LICENSE, THIRD_PARTY_NOTICES.txt
-  plugin_build/release/TCIGestureControl-AutoCAD-v<versi>.zip   (bundle + INSTAL.bat + HAPUS.bat + BACA-SAYA.txt)
+  plugin_build/release/GestureControl-AutoCAD-v<versi>.zip   (bundle + INSTAL.bat + HAPUS.bat + BACA-SAYA.txt)
 """
 
 import glob
@@ -25,7 +25,7 @@ from gesture_cad import __version__ as VERSION  # noqa: E402
 
 OUT = os.path.join(HERE, "plugin_build")
 PYI = os.path.join(OUT, "pyi", "GestureControl")
-BUNDLE = os.path.join(OUT, "TCIGestureControl.bundle")
+BUNDLE = os.path.join(OUT, "GestureControl.bundle")
 APP = os.path.join(BUNDLE, "Contents", "app")
 RELEASE = os.path.join(OUT, "release")
 NS = uuid.UUID("6f1d2b4e-8a5c-4e0b-9a51-2c7e8d3f4a10")  # tetap -> ProductCode/UpgradeCode stabil antar versi
@@ -33,27 +33,27 @@ REPO_URL = "https://github.com/naufaldm7-droid/Gesture-3D-View-"
 
 PACKAGE_XML = """<?xml version="1.0" encoding="utf-8"?>
 <ApplicationPackage SchemaVersion="1.0" AutodeskProduct="AutoCAD" ProductType="Application"
-    Name="TCI Gesture Control" AppVersion="{ver}" FriendlyVersion="{ver}"
+    Name="Gesture Control" AppVersion="{ver}" FriendlyVersion="{ver}"
     Description="Kendali AutoCAD dengan gerakan tangan lewat kamera laptop. Perintah: GK / GESTURE / KAMERA."
-    ProductCode="{{{product}}}" UpgradeCode="{{{upgrade}}}" Author="TCI Gesture Control" HelpFile="{url}">
-  <CompanyDetails Name="TCI Gesture Control" Url="{url}" />
+    ProductCode="{{{product}}}" UpgradeCode="{{{upgrade}}}" Author="Gesture Control" HelpFile="{url}">
+  <CompanyDetails Name="Gesture Control" Url="{url}" />
   <Components Description="Perintah LISP nyala/mati">
     <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R24.0" />
-    <ComponentEntry AppName="TCIGestureControl" Version="{ver}" ModuleName="./Contents/TCIGestureControl.lsp"
+    <ComponentEntry AppName="GestureControl" Version="{ver}" ModuleName="./Contents/GestureControl.lsp"
         AppDescription="Perintah GK / GESTURE / KAMERA" LoadOnAutoCADStartup="True" PerDocument="True" />
   </Components>
 </ApplicationPackage>
 """
 
 INSTALL_BAT = r"""@echo off
-rem Pasang TCI Gesture Control untuk AutoCAD (per pengguna, tanpa hak admin).
-set "DEST=%APPDATA%\Autodesk\ApplicationPlugins\TCIGestureControl.bundle"
+rem Pasang Gesture Control untuk AutoCAD (per pengguna, tanpa hak admin).
+set "DEST=%APPDATA%\Autodesk\ApplicationPlugins\GestureControl.bundle"
 tasklist /fi "imagename eq GestureControl.exe" | find /i "GestureControl.exe" >nul && (
   echo Gesture Control sedang berjalan. Matikan dulu ^(ketik GK di AutoCAD atau tombol Tutup^), lalu ulangi.
   pause
   exit /b 1
 )
-robocopy "%~dp0TCIGestureControl.bundle" "%DEST%" /MIR /NFL /NDL /NJH /NJS /NP >nul
+robocopy "%~dp0GestureControl.bundle" "%DEST%" /MIR /NFL /NDL /NJH /NJS /NP >nul
 if errorlevel 8 (
   echo GAGAL menyalin ke %DEST%
   pause
@@ -66,15 +66,15 @@ pause
 """
 
 UNINSTALL_BAT = r"""@echo off
-rem Lepas TCI Gesture Control dari AutoCAD.
-set "DEST=%APPDATA%\Autodesk\ApplicationPlugins\TCIGestureControl.bundle"
+rem Lepas Gesture Control dari AutoCAD.
+set "DEST=%APPDATA%\Autodesk\ApplicationPlugins\GestureControl.bundle"
 taskkill /im GestureControl.exe >nul 2>nul
 if exist "%DEST%" rmdir /s /q "%DEST%"
-echo TCI Gesture Control sudah dilepas. Mulai ulang AutoCAD.
+echo Gesture Control sudah dilepas. Mulai ulang AutoCAD.
 pause
 """
 
-README_TXT = """TCI Gesture Control untuk AutoCAD  v{ver}
+README_TXT = """Gesture Control untuk AutoCAD  v{ver}
 =========================================
 
 Kendalikan AutoCAD dengan gerakan tangan lewat kamera laptop. Tidak perlu Python.
@@ -101,7 +101,7 @@ GESTUR UTAMA
 
 MENYETEL
   Edit config.json di:
-  %APPDATA%\\Autodesk\\ApplicationPlugins\\TCIGestureControl.bundle\\Contents\\app\\config.json
+  %APPDATA%\\Autodesk\\ApplicationPlugins\\GestureControl.bundle\\Contents\\app\\config.json
   (lalu GK dua kali). Panduan: {url}
 
 LEPAS
@@ -163,14 +163,14 @@ def assemble():
     shutil.copy2(os.path.join(HERE, "config.json"), os.path.join(APP, "config.json"))
     os.makedirs(os.path.join(APP, "models"))
     shutil.copy2(os.path.join(HERE, "models", "hand_landmarker.task"), os.path.join(APP, "models"))
-    for lic in (os.path.join(HERE, "LICENSE"), os.path.join(HERE, "dist", "repo", "tci-gesture-control", "LICENSE")):
+    for lic in (os.path.join(HERE, "LICENSE"), os.path.join(HERE, "dist", "repo", "gesture-control", "LICENSE")):
         if os.path.exists(lic):  # repo publik: LICENSE di akar; folder kerja: salinan repo
             shutil.copy2(lic, os.path.join(APP, "LICENSE"))
             break
     with open(os.path.join(APP, "THIRD_PARTY_NOTICES.txt"), "w", encoding="utf-8") as fh:
         fh.write(NOTICES)
-    shutil.copy2(os.path.join(HERE, "plugin_src", "autocad", "TCIGestureControl.lsp"),
-                 os.path.join(BUNDLE, "Contents", "TCIGestureControl.lsp"))
+    shutil.copy2(os.path.join(HERE, "plugin_src", "autocad", "GestureControl.lsp"),
+                 os.path.join(BUNDLE, "Contents", "GestureControl.lsp"))
     xml = PACKAGE_XML.format(ver=VERSION, url=REPO_URL, product=str(uuid.uuid5(NS, "product-" + VERSION)).upper(),
                              upgrade=str(uuid.uuid5(NS, "upgrade")).upper())
     with open(os.path.join(BUNDLE, "PackageContents.xml"), "w", encoding="utf-8") as fh:
@@ -179,7 +179,7 @@ def assemble():
 
 def release():
     os.makedirs(RELEASE, exist_ok=True)
-    out = os.path.join(RELEASE, "TCIGestureControl-AutoCAD-v%s.zip" % VERSION)
+    out = os.path.join(RELEASE, "GestureControl-AutoCAD-v%s.zip" % VERSION)
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
         for p in glob.glob(os.path.join(BUNDLE, "**", "*"), recursive=True):
             if os.path.isfile(p):

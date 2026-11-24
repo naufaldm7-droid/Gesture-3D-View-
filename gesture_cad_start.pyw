@@ -1,6 +1,6 @@
 r"""Peluncur tanpa konsol, dipanggil oleh perintah GESTURE / KAMERA di AutoCAD.
 
-- Belum berjalan  -> jalankan Gesture CAD (log ke %LOCALAPPDATA%\TCI_GestureCAD\gesture_cad.log).
+- Belum berjalan  -> jalankan Gesture CAD (log ke %LOCALAPPDATA%\GestureControl\gesture_cad.log).
 - Sudah berjalan  -> minta instance itu berhenti (perintah yang sama = tombol nyala/mati).
 """
 
@@ -17,8 +17,8 @@ if not FROZEN:
     sys.path.insert(0, HERE)
 os.chdir(HERE)
 
-MUTEX = "Local\\TCI_GestureCAD_SingleInstance"
-STOP_FLAG = os.path.join(tempfile.gettempdir(), "tci_gesture_cad.stop")
+MUTEX = "Local\\GestureControl_SingleInstance"
+STOP_FLAG = os.path.join(tempfile.gettempdir(), "gesture_control.stop")
 ERROR_ALREADY_EXISTS = 183
 # Perintah diagnosa tidak ikut aturan nyala/mati (tidak boleh mematikan sesi yang sedang dipakai)
 DIAG = ("--check", "--download-model", "--download-voice-model", "--verify-sketchup", "--bench")
@@ -38,9 +38,9 @@ if not diag:
         os.remove(STOP_FLAG)
     except OSError:
         pass
-    os.environ["TCI_GC_LAUNCHER"] = "1"
+    os.environ["GC_LAUNCHER"] = "1"
 
-logdir = os.path.join(os.environ.get("LOCALAPPDATA", tempfile.gettempdir()), "TCI_GestureCAD")
+logdir = os.path.join(os.environ.get("LOCALAPPDATA", tempfile.gettempdir()), "GestureControl")
 os.makedirs(logdir, exist_ok=True)
 log = open(os.path.join(logdir, "gesture_cad_diag.log" if diag else "gesture_cad.log"), "w",
            encoding="utf-8", buffering=1)

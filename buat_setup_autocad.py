@@ -1,15 +1,15 @@
-"""Bangun penginstal sekali-klik TCIGestureControl-Setup.exe (Inno Setup) dari plugin yang sudah dibangun.
+"""Bangun penginstal sekali-klik GestureControl-Setup.exe (Inno Setup) dari plugin yang sudah dibangun.
 
     .venv\\Scripts\\python.exe buat_plugin_autocad.py      # dulu: exe + bundle
     .venv\\Scripts\\python.exe buat_setup_autocad.py       # lalu: penginstal
 
 Penginstal:
-  - per pengguna, TANPA hak admin, ke %APPDATA%\\Autodesk\\ApplicationPlugins\\TCIGestureControl.bundle
+  - per pengguna, TANPA hak admin, ke %APPDATA%\\Autodesk\\ApplicationPlugins\\GestureControl.bundle
     (folder plugin yang dimuat otomatis AutoCAD 2021+)
   - mematikan Gesture Control yang sedang berjalan dengan rapi sebelum menimpa / melepas
   - config.json pengguna dipertahankan saat memperbarui versi
   - tercatat di Settings > Apps (Uninstall)
-Nama file tetap (tanpa versi) supaya tautan .../releases/latest/download/TCIGestureControl-Setup.exe stabil.
+Nama file tetap (tanpa versi) supaya tautan .../releases/latest/download/GestureControl-Setup.exe stabil.
 """
 
 import os
@@ -21,7 +21,7 @@ sys.path.insert(0, HERE)
 from gesture_cad import __version__ as VERSION  # noqa: E402
 
 OUT = os.path.join(HERE, "plugin_build")
-BUNDLE = os.path.join(OUT, "TCIGestureControl.bundle")
+BUNDLE = os.path.join(OUT, "GestureControl.bundle")
 RELEASE = os.path.join(OUT, "release")
 REPO_URL = "https://github.com/naufaldm7-droid/Gesture-3D-View-"
 APP_ID = "{{7C1A4E2B-5D3F-4A8E-9B6C-2E8F1D4A7C30}"  # tetap selamanya: Windows mengenali versi baru sbg pembaruan
@@ -34,23 +34,24 @@ ISS = r"""; Dibuat oleh buat_setup_autocad.py - jangan diedit manual.
 
 [Setup]
 AppId={appid}
-AppName=TCI Gesture Control untuk AutoCAD
+AppName=Gesture Control untuk AutoCAD
 AppVersion={{#AppVer}}
-AppVerName=TCI Gesture Control {{#AppVer}}
-AppPublisher=TCI Gesture Control
+AppVerName=Gesture Control {{#AppVer}}
+AppPublisher=Gesture Control
 AppPublisherURL={{#RepoUrl}}
 AppSupportURL={{#RepoUrl}}/issues
 AppUpdatesURL={{#RepoUrl}}/releases
 VersionInfoVersion={{#AppVer}}.0
-VersionInfoDescription=Penginstal TCI Gesture Control untuk AutoCAD
+VersionInfoDescription=Penginstal Gesture Control untuk AutoCAD
 PrivilegesRequired=lowest
-DefaultDirName={{userappdata}}\Autodesk\ApplicationPlugins\TCIGestureControl.bundle
+DefaultDirName={{userappdata}}\Autodesk\ApplicationPlugins\GestureControl.bundle
 DisableDirPage=yes
+UsePreviousAppDir=no
 DisableProgramGroupPage=yes
-UninstallDisplayName=TCI Gesture Control untuk AutoCAD
+UninstallDisplayName=Gesture Control untuk AutoCAD
 UninstallDisplayIcon={{app}}\Contents\app\GestureControl.exe
 OutputDir={release}
-OutputBaseFilename=TCIGestureControl-Setup
+OutputBaseFilename=GestureControl-Setup
 SetupIconFile={icon}
 WizardImageFile={wiz_large}
 WizardSmallImageFile={wiz_small}
@@ -62,10 +63,10 @@ ArchitecturesInstallIn64BitMode=x64compatible
 CloseApplications=no
 
 [Messages]
-WelcomeLabel1=Selamat datang di TCI Gesture Control
+WelcomeLabel1=Selamat datang di Gesture Control
 WelcomeLabel2=Penginstal ini memasang plugin kendali gestur tangan untuk AutoCAD 2021 atau lebih baru.%n%nKamera laptop membaca tangan Anda untuk menggerakkan kursor, klik, orbit, pan, dan zoom. Gambar kamera diproses hanya di komputer ini.%n%nKlik Next untuk melanjutkan.
-FinishedHeadingLabel=TCI Gesture Control sudah terpasang
-FinishedLabel=Buka (atau mulai ulang) AutoCAD, lalu ketik  GK  dan Enter untuk menyalakan kamera gestur. Ketik GK lagi untuk mematikannya.%n%nJika AutoCAD menampilkan peringatan keamanan untuk TCIGestureControl.lsp, pilih "Always Load".
+FinishedHeadingLabel=Gesture Control sudah terpasang
+FinishedLabel=Buka (atau mulai ulang) AutoCAD, lalu ketik  GK  dan Enter untuk menyalakan kamera gestur. Ketik GK lagi untuk mematikannya.%n%nJika AutoCAD menampilkan peringatan keamanan untuk GestureControl.lsp, pilih "Always Load".
 
 [Files]
 Source: "{bundle}\*"; DestDir: "{{app}}"; Excludes: "\Contents\app\config.json"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -83,7 +84,7 @@ var
   ResultCode: Integer;
 begin
   // minta berhenti dengan rapi (melepas tombol mouse/keyboard), lalu paksa bila masih ada
-  SaveStringToFile(GetEnv('TEMP') + '\tci_gesture_cad.stop', '', False);
+  SaveStringToFile(GetEnv('TEMP') + '\gesture_control.stop', '', False);
   Sleep(2500);
   Exec(ExpandConstant('{{sys}}\taskkill.exe'), '/im GestureControl.exe /f', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
 end;
@@ -149,12 +150,12 @@ def main():
     large = os.path.join(OUT, "wizard_large.bmp")
     small = os.path.join(OUT, "wizard_small.bmp")
     make_wizard_images(large, small)
-    iss = os.path.join(OUT, "TCIGestureControl.iss")
+    iss = os.path.join(OUT, "GestureControl.iss")
     with open(iss, "w", encoding="utf-8-sig") as fh:
         fh.write(ISS.format(ver=VERSION, url=REPO_URL, appid=APP_ID, release=RELEASE, bundle=BUNDLE,
                             icon=os.path.join(OUT, "GestureControl.ico"), wiz_large=large, wiz_small=small))
     r = subprocess.run([iscc, "/Q", iss], capture_output=True, text=True)
-    exe = os.path.join(RELEASE, "TCIGestureControl-Setup.exe")
+    exe = os.path.join(RELEASE, "GestureControl-Setup.exe")
     if r.returncode != 0 or not os.path.exists(exe):
         print(r.stdout[-3000:], r.stderr[-3000:])
         raise SystemExit("Inno Setup gagal")

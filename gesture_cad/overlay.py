@@ -105,7 +105,7 @@ except AttributeError:
 kernel32.GetModuleHandleW.argtypes = (wintypes.LPCWSTR,)
 kernel32.GetModuleHandleW.restype = wintypes.HMODULE
 
-_CLASS = "TCI_GestureCAD_Overlay"
+_CLASS = "GestureControl_Overlay"
 _proc_ref = None
 _click_handlers = {}  # hwnd -> fungsi(x, y) untuk jendela yang bisa diklik
 

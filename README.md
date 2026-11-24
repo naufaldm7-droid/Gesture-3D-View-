@@ -1,4 +1,4 @@
-# TCI Gesture Control untuk AutoCAD
+# Gesture Control untuk AutoCAD
 
 Kendalikan **AutoCAD** dengan **gerakan tangan di depan kamera laptop**: kursor, klik, putar, geser, dan zoom
 model 3D, serta menu perintah, tanpa menyentuh mouse.
@@ -18,19 +18,19 @@ Autodesk plugin, no Python needed. Everything runs locally; documentation is in 
 
 ## Pasang (pengguna)
 
-**[⬇ Download TCIGestureControl-Setup.exe](../../releases/latest/download/TCIGestureControl-Setup.exe)**
+**[⬇ Download GestureControl-Setup.exe](../../releases/latest/download/GestureControl-Setup.exe)**
 (~80 MB). Halaman unduhan juga ada di GitHub Pages repo ini.
 
-1. Jalankan `TCIGestureControl-Setup.exe`, lalu **Next → Install**. Tidak perlu hak admin.
+1. Jalankan `GestureControl-Setup.exe`, lalu **Next → Install**. Tidak perlu hak admin.
 2. Buka (atau mulai ulang) **AutoCAD 2021 atau lebih baru**. Command line menampilkan
-   *"TCI Gesture Control siap"*.
+   *"Gesture Control siap"*.
 3. Ketik **`GK`** lalu Enter untuk menyalakan kamera gestur. Ketik `GK` lagi untuk mematikannya.
 
 Catatan pemasangan:
-- Kalau AutoCAD menampilkan dialog keamanan untuk `TCIGestureControl.lsp`, pilih **Always Load**.
+- Kalau AutoCAD menampilkan dialog keamanan untuk `GestureControl.lsp`, pilih **Always Load**.
 - Windows SmartScreen mungkin menampilkan *"Windows protected your PC"*, karena penginstal belum bertanda
   tangan digital. Klik *More info → Run anyway*.
-- Untuk melepas: **Settings → Apps → TCI Gesture Control untuk AutoCAD → Uninstall**.
+- Untuk melepas: **Settings → Apps → Gesture Control untuk AutoCAD → Uninstall**.
 - Alternatif tanpa penginstal: unduh ZIP dari [Releases](../../releases), ekstrak, lalu jalankan `INSTAL.bat`
   (lepas dengan `HAPUS.bat`).
 
@@ -56,7 +56,7 @@ Untuk menutup: tombol **✕ Tutup** di atas kartu kamera, `Ctrl+Alt+Q`, `GK`, at
 ## Menyetel
 
 Edit `config.json` di
-`%APPDATA%\Autodesk\ApplicationPlugins\TCIGestureControl.bundle\Contents\app\`, lalu ketik `GK` dua kali.
+`%APPDATA%\Autodesk\ApplicationPlugins\GestureControl.bundle\Contents\app\`, lalu ketik `GK` dua kali.
 Panduan "gejala → kunci" ada di [docs/tuning.md](docs/tuning.md). Contoh: kursor terasa licin → turunkan
 `pointer.gain_slow`.
 
@@ -78,7 +78,7 @@ Untuk membangun plugin dan penginstal sendiri (hasilnya di `plugin_build\release
 .venv\Scripts\python.exe -m pip install pyinstaller
 winget install JRSoftware.InnoSetup --scope user          # sekali, untuk Setup.exe
 .venv\Scripts\python.exe buat_plugin_autocad.py            # exe + bundle + ZIP
-.venv\Scripts\python.exe buat_setup_autocad.py             # TCIGestureControl-Setup.exe
+.venv\Scripts\python.exe buat_setup_autocad.py             # GestureControl-Setup.exe
 ```
 
 Suara opsional (offline, hanya mode kode sumber):

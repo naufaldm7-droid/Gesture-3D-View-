@@ -1,7 +1,7 @@
 # Menyetel config.json (AutoCAD)
 
 Lokasi `config.json`:
-- **Plugin:** `%APPDATA%\Autodesk\ApplicationPlugins\TCIGestureControl.bundle\Contents\app\config.json`
+- **Plugin:** `%APPDATA%\Autodesk\ApplicationPlugins\GestureControl.bundle\Contents\app\config.json`
 - **Kode sumber:** di folder repo.
 
 Ubah **satu nilai** setiap kali, lalu mulai ulang dengan mengetik `GK` dua kali (mati, lalu nyala). Kalau

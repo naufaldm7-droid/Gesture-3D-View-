@@ -1,13 +1,13 @@
-;;; TCI Gesture Control untuk AutoCAD
+;;; Gesture Control untuk AutoCAD
 ;;; Perintah GK / GESTURE / KAMERA = nyalakan atau matikan kendali gestur tangan (kamera laptop).
-;;; Dimuat otomatis oleh AutoCAD dari ...\ApplicationPlugins\TCIGestureControl.bundle (PackageContents.xml).
+;;; Dimuat otomatis oleh AutoCAD dari ...\ApplicationPlugins\GestureControl.bundle (PackageContents.xml).
 ;;; Memanggil GestureControl.exe yang sama dua kali = mematikannya (program hanya berjalan satu salinan).
 
-(defun tci-gc-exe (/ p c)
+(defun gc-exe (/ p c)
   (foreach r (list (getenv "APPDATA") (getenv "ProgramData") (getenv "ProgramFiles"))
     (if (and r (not p))
       (progn
-        (setq c (strcat r "\\Autodesk\\ApplicationPlugins\\TCIGestureControl.bundle\\Contents\\app\\GestureControl.exe"))
+        (setq c (strcat r "\\Autodesk\\ApplicationPlugins\\GestureControl.bundle\\Contents\\app\\GestureControl.exe"))
         (if (findfile c) (setq p c))
       )
     )
@@ -15,8 +15,8 @@
   p
 )
 
-(defun tci-gc-toggle (/ exe)
-  (setq exe (tci-gc-exe))
+(defun gc-toggle (/ exe)
+  (setq exe (gc-exe))
   (if exe
     (progn
       (startapp (strcat "\"" exe "\""))
@@ -27,9 +27,9 @@
   (princ)
 )
 
-(defun c:GK () (tci-gc-toggle))
-(defun c:GESTURE () (tci-gc-toggle))
-(defun c:KAMERA () (tci-gc-toggle))
+(defun c:GK () (gc-toggle))
+(defun c:GESTURE () (gc-toggle))
+(defun c:KAMERA () (gc-toggle))
 
-(princ "\nTCI Gesture Control siap: ketik GK untuk menyalakan/mematikan kamera gestur.")
+(princ "\nGesture Control siap: ketik GK untuk menyalakan/mematikan kamera gestur.")
 (princ)

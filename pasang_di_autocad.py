@@ -23,8 +23,8 @@ PYW = os.path.join(HERE, ".venv", "Scripts", "pythonw.exe")
 LAUNCHER = os.path.join(HERE, "gesture_cad_start.pyw")
 BAT = os.path.join(HERE, "gk.bat")
 COMMANDS = ("GESTURE", "KAMERA", "GK")
-BEGIN = "; >>> TCI Gesture CAD (dikelola oleh 17_GESTURE_CAD/pasang_di_autocad.py) >>>"
-END = "; <<< TCI Gesture CAD <<<"
+BEGIN = "; >>> Gesture Control (dikelola oleh pasang_di_autocad.py) >>>"
+END = "; <<< Gesture Control <<<"
 
 
 def pgp_files():
@@ -48,12 +48,12 @@ def short_path(p):
 
 
 MAX_TARGET = 60  # panjang path di baris PGP yang masih aman (baris panjang/berkutip ditolak diam-diam)
-RELAY = os.path.join(os.environ.get("LOCALAPPDATA", os.path.expanduser("~")), "TCIGC", "gk.bat")
+RELAY = os.path.join(os.environ.get("LOCALAPPDATA", os.path.expanduser("~")), "GestureControlPGP", "gk.bat")
 
 
 def pgp_target(create=False):
     """Path yang ditulis di acad.pgp. Bila gk.bat ada di folder yang dalam, pakai perantara pendek
-    %LOCALAPPDATA%\\TCIGC\\gk.bat yang memanggil gk.bat asli (create=True menulis perantaranya)."""
+    %LOCALAPPDATA%\\GestureControlPGP\\gk.bat yang memanggil gk.bat asli (create=True menulis perantaranya)."""
     p = short_path(BAT)
     if len(p) <= MAX_TARGET and " " not in p:
         return p

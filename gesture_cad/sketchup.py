@@ -1,4 +1,4 @@
-"""Jembatan ke SketchUp: klien TCP lokal ke ekstensi Ruby `tci_gesture_control` di dalam SketchUp.
+"""Jembatan ke SketchUp: klien TCP lokal ke ekstensi Ruby Gesture Control di dalam SketchUp.
 
 Protokol: satu objek JSON per baris, ke 127.0.0.1:<port> (bawaan 47820). Ekstensi Ruby hanya menerima
 operasi dari daftar putih — tidak ada eksekusi kode Ruby bebas dari luar.
