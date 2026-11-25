@@ -47,7 +47,71 @@ body.sk .panel a:not(.btn) { color: var(--gold1); }
   color: #2a1606; border: 0; background: linear-gradient(180deg, #ffe9b0, #d99a3c); box-shadow: 0 0 0 2px #2a1606, 0 4px 14px rgba(0, 0, 0, .5); font-weight: 700; }
 .sk-pctl { display: flex; justify-content: center; gap: 10px; margin-top: 12px; }
 
+body.sk.intro-on .scroll-cue, body.sk.intro-on .appre-hook { opacity: 0; }
+
+/* panduan baut (gaya sama dengan bata kunci di halaman Gesture), dipasang di atas kanvas */
+.sk-guide { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 30; opacity: 0; }
+.sk-guide.on { opacity: 1; }
+.sk-call { position: fixed; z-index: 31; left: 0; top: 0; opacity: 0; translate: -50% -130%; }
+.sk-call.on { opacity: 1; }
+body.sk.dragging, body.sk.dragging * { cursor: grabbing !important; user-select: none; }
+
+/* bagian unduh: panel ringkas di pojok kanan bawah, potongan baja & baut tetap terlihat di atas-kiri */
+body.sk #unduh { justify-content: flex-end; padding-bottom: 36px; }
+body.sk #unduh .sk-panel { max-width: 470px; padding: 26px 30px; }
+body.sk #unduh .sk-panel .banner { display: none; }
+body.sk #unduh .sk-panel h2 { font-size: clamp(24px, 3vw, 34px); }
+
+/* tombol unduh terkunci sampai baut terpasang */
+.sk-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.sk-dl.locked { filter: grayscale(.85) brightness(.75); cursor: not-allowed; pointer-events: none; }
+.sk-dl.ready { animation: dlGlow 1.6s ease-in-out infinite; }
+@keyframes dlGlow { 0%, 100% { box-shadow: 0 0 0 1px #fff0c4 inset, 0 0 0 3px rgba(60, 30, 8, .8), 0 0 0 4px rgba(224, 169, 74, .7), 0 0 14px rgba(255, 180, 80, .35); }
+  50% { box-shadow: 0 0 0 1px #fff0c4 inset, 0 0 0 3px rgba(60, 30, 8, .8), 0 0 0 4px rgba(224, 169, 74, .9), 0 0 38px rgba(255, 180, 80, .8); } }
+
+/* lukisan satu layar penuh dengan keterangan bernomor */
+.sk-viewer { position: fixed; inset: 0; z-index: 80; display: grid; grid-template-columns: 1fr minmax(300px, 380px); gap: 18px;
+  padding: 18px; background: rgba(8, 5, 4, .94); backdrop-filter: blur(6px); animation: skpop .3s ease; }
+.sk-viewer[hidden] { display: none; }
+.sk-viewer-stage { min-width: 0; min-height: 0; display: grid; place-items: center; }
+.sk-viewer-img { position: relative; max-width: 100%; max-height: calc(100vh - 36px); }
+.sk-viewer-img img { display: block; max-width: 100%; max-height: calc(100vh - 36px); width: auto; height: auto; border: 1px solid var(--edge);
+  box-shadow: 0 0 0 4px rgba(20, 12, 8, .9), 0 0 0 5px rgba(224, 169, 74, .35); image-rendering: auto; }
+#viewerPins { position: absolute; inset: 0; pointer-events: none; }
+.sk-pin { position: absolute; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; display: grid; place-items: center;
+  font: 700 14px var(--f-head); color: #2a1606; background: linear-gradient(180deg, #ffe9b0, #d99a3c); pointer-events: auto; cursor: pointer;
+  box-shadow: 0 0 0 2px #2a1606, 0 0 0 4px rgba(255, 220, 150, .55), 0 4px 12px rgba(0, 0, 0, .6); transition: transform .2s ease; }
+.sk-pin.on, .sk-pin:hover { transform: scale(1.25); }
+.sk-viewer-side { overflow-y: auto; max-height: calc(100vh - 36px); align-self: center; }
+.sk-viewer-side h3 { font-size: 22px; }
+.sk-viewer-side ol { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 8px; counter-reset: n; }
+.sk-viewer-side li { counter-increment: n; display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: start; padding: 8px;
+  border-radius: 6px; font-size: 17px; line-height: 1.4; color: var(--ink); cursor: default; transition: background-color .2s ease; }
+.sk-viewer-side li::before { content: counter(n); width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+  font: 700 13px var(--f-head); color: #2a1606; background: linear-gradient(180deg, #ffe9b0, #d99a3c); }
+.sk-viewer-side li.on { background: rgba(224, 169, 74, .16); }
+.sk-viewer-nav { display: flex; justify-content: space-between; gap: 8px; margin-top: 16px; }
+.sk-viewer > .sk-x { position: fixed; top: 14px; right: 14px; }
+
 @media (max-width: 760px) {
   #skip { right: 12px; }
   body.sk section { justify-content: flex-end; }
+  .sk-viewer { grid-template-columns: 1fr; grid-template-rows: auto 1fr; overflow-y: auto; }
+  .sk-viewer-img img { max-height: 55vh; }
+  .sk-viewer-side { max-height: none; }
+}
+
+/* layar sedang: panel "Isi" setengah layar supaya lukisan punya ruang di kanan */
+@media (min-width: 761px) and (max-width: 1240px) {
+  body.sk #fitur .sk-panel { max-width: 48vw; padding: 26px 26px; }
+  body.sk #fitur .sk-panel .banner { display: none; }
+  body.sk #fitur .facts { grid-template-columns: 1fr; gap: 10px; }
+  body.sk #fitur .fact p { font-size: 15.5px; }
+}
+
+/* layar sedang & kecil: gambar penuh di atas, keterangan di bawahnya */
+@media (max-width: 1100px) {
+  .sk-viewer { grid-template-columns: 1fr; grid-template-rows: auto auto; align-content: start; overflow-y: auto; }
+  .sk-viewer-img, .sk-viewer-img img { max-height: 64vh; }
+  .sk-viewer-side { max-height: none; align-self: start; }
 }

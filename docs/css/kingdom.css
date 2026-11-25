@@ -82,14 +82,20 @@ main { position: relative; z-index: 2; overflow-x: clip; }
   z-index: 60;
   pointer-events: none;
   background: radial-gradient(ellipse at 50% 60%, #6a3a24 0%, #2a1712 55%, #0d0806 100%);
-  transition: opacity 1.8s ease .5s;
+  transition: opacity 2.4s cubic-bezier(.4, 0, .2, 1) .9s;
 }
 #veil canvas {
   position: absolute;
+  z-index: 1;
   width: 95vmax;
   height: auto;
-  transition: transform 2.6s cubic-bezier(.65, 0, .25, 1), opacity 2.4s ease;
+  will-change: transform, opacity;
+  transition: transform 3.4s cubic-bezier(.45, .05, .2, 1), opacity 3s ease;
+  animation: veilDrift 9s ease-in-out infinite alternate;
 }
+#veil .v3, #veil .v4 { transition-delay: .18s; }
+#veil .v5, #veil .v6 { transition-delay: .32s; }
+@keyframes veilDrift { from { translate: 0 0; } to { translate: 1.5vmax -.8vmax; } }
 #veil .v1 { left: -30vmax; top: -18vmax; }
 #veil .v2 { right: -32vmax; top: -12vmax; }
 #veil .v3 { left: -28vmax; bottom: -22vmax; }
@@ -104,11 +110,12 @@ main { position: relative; z-index: 2; overflow-x: clip; }
   font: 700 clamp(20px, 3.4vw, 36px) var(--f-title);
   letter-spacing: .1em;
   color: var(--gold1);
-  text-shadow: 0 0 24px rgba(255, 170, 80, .6), 0 2px 0 #2a1408;
-  transition: opacity .6s ease;
+  text-shadow: 0 0 24px rgba(255, 170, 80, .6), 0 2px 0 #2a1408, 0 0 60px rgba(10, 5, 3, .9);
+  z-index: 3;
+  transition: opacity .9s ease, transform 1.6s cubic-bezier(.4, 0, .2, 1);
 }
 #veil.open { opacity: 0; }
-#veil.open .veil-word { opacity: 0; }
+#veil.open .veil-word { opacity: 0; transform: scale(1.06); }
 #veil.open .v1, #veil.open .v3 { transform: translateX(-75vmax) scale(1.35); }
 #veil.open .v2, #veil.open .v4 { transform: translateX(75vmax) scale(1.35); }
 #veil.open .v5 { transform: translate(-60vmax, -20vmax) scale(1.6); opacity: 0; }
@@ -645,3 +652,53 @@ html.post .film { opacity: .28; }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; }
 }
+
+
+/* ---------------------------------------------------------------- pemilih aplikasi (logo mahkota) */
+.crest { cursor: pointer; }
+.crest .caret { font-style: normal; font-size: 11px; color: var(--gold2); margin-left: -2px; transition: transform .3s ease; }
+.crest[aria-expanded="true"] .caret { transform: rotate(180deg); }
+.app-menu {
+  position: absolute; left: 6px; top: calc(100% + 12px); z-index: 60; width: min(340px, calc(100vw - 32px));
+  padding: 10px; border-radius: 10px;
+  background: linear-gradient(180deg, rgba(34, 22, 14, .97), rgba(12, 8, 6, .98));
+  box-shadow: 0 0 0 1px var(--edge), 0 0 0 4px rgba(20, 12, 8, .85), 0 0 0 5px rgba(224, 169, 74, .3), 0 18px 40px rgba(0, 0, 0, .6);
+  opacity: 0; transform: translateY(-8px) scale(.98); transform-origin: 30px 0; pointer-events: none;
+  transition: opacity .25s ease, transform .3s cubic-bezier(.2, .8, .2, 1);
+}
+.app-menu.open { opacity: 1; transform: none; pointer-events: auto; }
+.app-menu::before { content: ""; position: absolute; left: 22px; top: -7px; width: 12px; height: 12px; transform: rotate(45deg);
+  background: rgba(34, 22, 14, .97); border-left: 1px solid var(--edge); border-top: 1px solid var(--edge); }
+.app-menu-title { font: 600 11px var(--f-head); letter-spacing: .3em; text-transform: uppercase; color: var(--gold2); padding: 4px 8px 8px; }
+.app-item { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; padding: 10px; border: 0; border-radius: 7px;
+  background: transparent; color: var(--ink); cursor: pointer; transition: background-color .2s ease; }
+.app-item:hover, .app-item:focus-visible { background: rgba(224, 169, 74, .14); outline: none; }
+.app-item.on { background: rgba(224, 169, 74, .1); box-shadow: 0 0 0 1px rgba(224, 169, 74, .35) inset; }
+.app-item.soon { opacity: .5; cursor: default; }
+.app-ico svg { width: 34px; height: 34px; display: block; filter: drop-shadow(0 0 6px rgba(255, 190, 90, .35)); }
+.app-txt { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.app-txt b { font: 700 16px var(--f-head); letter-spacing: .04em; color: var(--gold1); }
+.app-txt small { font: 400 15px/1.3 var(--f-body); color: var(--muted); }
+.app-item em { font: italic 13px var(--f-body); color: var(--gold2); }
+
+/* ---------------------------------------------------------------- kartu apresiasi kecil melayang */
+.appre-hook {
+  position: fixed; right: 18px; top: 74px; z-index: 35; display: flex; align-items: center; gap: 10px; max-width: 250px;
+  padding: 8px 14px 8px 8px; border: 0; border-radius: 8px; cursor: pointer; text-align: left; color: var(--ink);
+  background: linear-gradient(180deg, rgba(34, 22, 14, .92), rgba(12, 8, 6, .94));
+  box-shadow: 0 0 0 1px var(--edge), 0 10px 24px rgba(0, 0, 0, .5);
+  animation: hookFloat 4.5s ease-in-out infinite; transition: opacity .5s ease, transform .5s ease;
+}
+.appre-hook:hover { box-shadow: 0 0 0 1px #ffe7a8, 0 0 22px rgba(255, 180, 80, .35), 0 10px 24px rgba(0, 0, 0, .5); }
+.appre-hook .qr { width: 34px; height: 34px; flex: none; border-radius: 4px; background:
+  conic-gradient(from 90deg at 50% 50%, #2a1606 25%, #ffe7a8 0 50%, #2a1606 0 75%, #ffe7a8 0) 0 0 / 12px 12px; box-shadow: 0 0 0 3px #ffe7a8; }
+.appre-hook b { display: block; font: 700 14px var(--f-head); letter-spacing: .03em; color: var(--gold1); }
+.appre-hook small { display: block; font: 400 14px/1.2 var(--f-body); color: var(--muted); }
+.appre-hook.away, .appre-hook.hidden { opacity: 0; transform: translateY(-10px); pointer-events: none; }
+@keyframes hookFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -6px; } }
+@media (max-width: 760px) {
+  .appre-hook { top: auto; bottom: 14px; right: 12px; max-width: 210px; padding: 6px 10px 6px 6px; }
+  .appre-hook .qr { width: 26px; height: 26px; }
+  .crest b { display: inline; font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { .appre-hook, #veil canvas { animation: none; } }

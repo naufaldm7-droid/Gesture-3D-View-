@@ -2,6 +2,7 @@
 // QRIS, tooltip. Adegan 3D dimuat terpisah (kingdom.js); bila gagal, halaman tetap utuh tanpa 3D.
 import { noiseCloud, DARK_PAL } from './cloud.js';
 import { drawWall, drawKeyBrick } from './brick.js';
+import { mountAppSwitcher, mountAppreciationHook } from './apps.js';
 
 const html = document.documentElement;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -21,7 +22,8 @@ function openVeil() {
   if (veilOpened) return;
   veilOpened = true;
   veil.classList.add('open');
-  setTimeout(() => veil.classList.add('gone'), 3000);
+  setTimeout(() => veil.classList.add('gone'), 3600);
+  if (hook) setTimeout(() => hook.show(true), 2600);
   if (kingdom) kingdom.intro();
 }
 if (reduced) {
@@ -256,6 +258,22 @@ if (qsrc) {
   qris.classList.add('empty');
 }
 
+// ------------------------------------------------------------------ pemilih aplikasi (logo mahkota) + kartu apresiasi
+let enterSteelKit = () => false;
+mountAppSwitcher({
+  crest: $('.topbar .crest'), current: 'gesture', base: '',
+  go: (app) => {
+    if (app.id === 'gesture') { const top = $('#istana'); if (lenis) lenis.scrollTo(top, { duration: 2 }); else top.scrollIntoView({ behavior: 'smooth' }); return true; }
+    if (app.id === 'steelkit') return enterSteelKit();
+    return false;
+  },
+});
+var hook = mountAppreciationHook({
+  target: '#apresiasi',
+  scrollTo: (el) => (lenis ? lenis.scrollTo(el, { duration: 2.2 }) : el.scrollIntoView({ behavior: 'smooth' })),
+});
+if (hook && !veilOpened) hook.show(false);
+
 // ------------------------------------------------------------------ adegan 3D
 let kingdom = null;
 const UI_SEL = 'a, button, input, summary, details, table, .panel, .forge, .topbar, .tip, .toast, .lead, .hint, h1, h2';
@@ -271,16 +289,16 @@ import('./kingdom.js').then((m) => m.start({
   },
 })).then((k) => {
   kingdom = k;
-  // tautan ke Aula Baja (Steel Kit): terbang masuk gerbang istana dulu, lalu pindah halaman
-  $$('a[href^="steelkit/"]').forEach((a) => a.addEventListener('click', (e) => {
-    if (e.ctrlKey || e.metaKey || e.shiftKey || reduced || !k.enterGate) return;
-    e.preventDefault();
+  // menuju Steel Kit lewat pemilih aplikasi: terbang masuk gerbang istana dulu, lalu pindah halaman
+  enterSteelKit = () => {
+    if (reduced || !k.enterGate) return false;
     const shade = document.createElement('div');
     shade.style.cssText = 'position:fixed;inset:0;z-index:90;background:#0a0605;opacity:0;pointer-events:none;transition:opacity 1.1s ease 2.1s';
     document.body.appendChild(shade);
     requestAnimationFrame(() => { shade.style.opacity = '1'; });
     k.enterGate(() => { location.href = 'steelkit/?dari=gerbang'; });
-  }));
+    return true;
+  };
   if (veilOpened) k.intro();
 }).catch((err) => {
   console.warn('Adegan 3D tidak dimuat, halaman tetap jalan:', err && err.message);
