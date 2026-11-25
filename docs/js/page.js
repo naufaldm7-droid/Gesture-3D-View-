@@ -271,6 +271,16 @@ import('./kingdom.js').then((m) => m.start({
   },
 })).then((k) => {
   kingdom = k;
+  // tautan ke Aula Baja (Steel Kit): terbang masuk gerbang istana dulu, lalu pindah halaman
+  $$('a[href^="steelkit/"]').forEach((a) => a.addEventListener('click', (e) => {
+    if (e.ctrlKey || e.metaKey || e.shiftKey || reduced || !k.enterGate) return;
+    e.preventDefault();
+    const shade = document.createElement('div');
+    shade.style.cssText = 'position:fixed;inset:0;z-index:90;background:#0a0605;opacity:0;pointer-events:none;transition:opacity 1.1s ease 2.1s';
+    document.body.appendChild(shade);
+    requestAnimationFrame(() => { shade.style.opacity = '1'; });
+    k.enterGate(() => { location.href = 'steelkit/?dari=gerbang'; });
+  }));
   if (veilOpened) k.intro();
 }).catch((err) => {
   console.warn('Adegan 3D tidak dimuat, halaman tetap jalan:', err && err.message);

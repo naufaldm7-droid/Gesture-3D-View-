@@ -1,0 +1,53 @@
+/* Aula Baja: hanya tambahan di atas kingdom.css (tema istana Gesture Control). */
+body.sk.intro-on { overflow: hidden; }
+#world { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; z-index: 0; }
+
+/* vinyet fokus: pusatnya mengikuti benda yang sedang dibahas */
+#focus { position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse 46% 52% at var(--fx, 50%) var(--fy, 55%), rgba(10, 6, 4, 0) 0%, rgba(10, 6, 4, .18) 55%, rgba(10, 6, 4, .62) 100%); }
+
+/* tirai masuk (gelap, dari gerbang istana) */
+#skVeil { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; background: #0a0605; transition: opacity 1.6s ease; }
+#skVeil.gone { opacity: 0; pointer-events: none; }
+#skVeil .veil-word { position: static; transform: none; }
+
+/* pita sinematik + judul */
+.bars i { position: fixed; left: 0; right: 0; height: 10vh; background: #000; z-index: 45; transition: transform 1.4s cubic-bezier(.7, 0, .2, 1); }
+.bars i:first-child { top: 0; } .bars i:last-child { bottom: 0; }
+body.sk:not(.intro-on) .bars i:first-child { transform: translateY(-100%); }
+body.sk:not(.intro-on) .bars i:last-child { transform: translateY(100%); }
+#introTitle { position: fixed; left: 0; right: 0; bottom: 14vh; z-index: 46; text-align: center; pointer-events: none;
+  display: flex; flex-direction: column; gap: 6px; opacity: 0; transition: opacity 1.4s ease; text-shadow: 0 2px 20px rgba(0, 0, 0, .9); }
+#introTitle.show { opacity: 1; }
+#introTitle .kicker { font: 600 13px var(--f-head); letter-spacing: .4em; text-transform: uppercase; color: var(--gold2); }
+#introTitle .big { font: 900 clamp(40px, 7vw, 92px)/1 var(--f-title); color: var(--gold1); letter-spacing: .04em; }
+#introTitle .sub2 { font: italic 400 clamp(16px, 1.8vw, 21px) var(--f-body); color: var(--muted); }
+#skip { position: fixed; right: 22px; bottom: calc(10vh + 16px); z-index: 47; transition: opacity .6s; }
+body.sk:not(.intro-on) #skip { opacity: 0; pointer-events: none; }
+body.sk.intro-on .topbar { opacity: 0; pointer-events: none; }
+body.sk .topbar { transition: opacity .8s ease; }
+
+/* teks bagian */
+body.sk main { position: relative; z-index: 2; }
+body.sk .num { color: var(--gold1); font-variant-numeric: tabular-nums; }
+.sk-panel { max-width: 640px; }
+.sk-gap { margin-top: 18px !important; }
+body.sk .panel a:not(.btn) { color: var(--gold1); }
+
+/* lukisan & cermin demo */
+.sk-modal { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; padding: 20px; background: rgba(8, 5, 4, .78); backdrop-filter: blur(6px); }
+.sk-modal[hidden] { display: none; }
+.sk-modal-in { position: relative; width: 100%; max-width: 960px; padding: 18px 18px 22px; animation: skpop .35s cubic-bezier(.2, .9, .3, 1.2); }
+.sk-modal-in.wide { max-width: 1180px; }
+@keyframes skpop { from { transform: scale(.95); opacity: 0; } }
+.sk-modal-in img, .sk-modal-in canvas { display: block; width: 100%; max-height: 64vh; object-fit: contain; background: #0f0b09; border: 1px solid var(--edge); }
+.sk-modal-in canvas { height: auto; max-height: none; }
+.sk-modal-in h3 { margin-top: 14px; }
+.sk-x { position: absolute; top: -14px; right: -14px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
+  color: #2a1606; border: 0; background: linear-gradient(180deg, #ffe9b0, #d99a3c); box-shadow: 0 0 0 2px #2a1606, 0 4px 14px rgba(0, 0, 0, .5); font-weight: 700; }
+.sk-pctl { display: flex; justify-content: center; gap: 10px; margin-top: 12px; }
+
+@media (max-width: 760px) {
+  #skip { right: 12px; }
+  body.sk section { justify-content: flex-end; }
+}

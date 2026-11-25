@@ -1218,6 +1218,7 @@ export function start(o) {
   }
 
   let introT0 = reduced ? -2 : -1; // -1 = menunggu tirai dibuka
+  let gate = null; // perjalanan masuk gerbang istana ke Aula Baja (Steel Kit)
   const introDur = 4.2;
   const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
@@ -1440,7 +1441,22 @@ export function start(o) {
     sparkSets.forEach((s) => { s.material.uniforms.uTime.value = time; });
 
     scrollTarget();
-    if (introT0 === -1) {
+    if (gate) {
+      // masuk gerbang istana menuju Aula Baja (Steel Kit): kamera ke depan gerbang lalu menembus pintunya
+      const t = Math.min(1, (now - gate.t0) / 1000 / gate.dur);
+      const front = castle.localToWorld(tmpA.set(0, G + 2.2, S + 9));
+      const inside = castle.localToWorld(tmpB.set(0, G + 1.6, S - 2));
+      if (t < 0.6) {
+        const k = ease(t / 0.6);
+        camPos.copy(gate.p0).lerp(front, k);
+        camLook.copy(gate.l0).lerp(castle.localToWorld(gate.door.set(0, G + 1.6, S)), k);
+      } else {
+        const k = ease((t - 0.6) / 0.4);
+        camPos.copy(front).lerp(inside, k);
+        camLook.copy(castle.localToWorld(gate.door.set(0, G + 1.5, S - 8)));
+      }
+      if (t >= 1 && !gate.fired) { gate.fired = true; if (gate.done) gate.done(); }
+    } else if (introT0 === -1) {
       tgtPos.fromArray(INTRO.p); tgtLook.fromArray(INTRO.l);
       camPos.copy(tgtPos); camLook.copy(tgtLook);
     } else if (introT0 >= 0) {
@@ -1507,6 +1523,10 @@ export function start(o) {
     intro() {
       if (introT0 !== -1) return;
       introT0 = performance.now();
+    },
+    enterGate(done) {
+      if (gate) return;
+      gate = { t0: performance.now(), dur: reduced ? 0.05 : 3.2, p0: camPos.clone(), l0: camLook.clone(), door: new THREE.Vector3(), done };
     },
     celebrate() {
       spawnBurst(new THREE.Vector3(0, isle.position.y + 30, -4.6), 80, 12);

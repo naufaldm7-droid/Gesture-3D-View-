@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Steel Kit · Aula Baja Kerajaan Gesture Control</title>
+<meta name="description" content="Masuk ke aula baja di dalam istana: Steel Kit, plugin AutoCAD gratis untuk rangka baja, 28 jenis sambungan, gambar kerja, dan quantity Excel, dengan asisten bahasa Indonesia.">
+<meta name="theme-color" content="#140d09">
+<meta property="og:title" content="Steel Kit · Aula Baja">
+<meta property="og:description" content="Satu kalimat. 54 batang. 174 sambungan. Plugin baja struktur gratis untuk AutoCAD 2021-2027.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="img/asisten.webp">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M4 26h24l-2-14-5 5-5-11-5 11-5-5z' fill='%23e0a94a' stroke='%232a1606' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<link rel="stylesheet" href="../css/kingdom.css">
+<link rel="stylesheet" href="steelkit.css">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body class="sk intro-on">
+
+<canvas id="world" aria-hidden="true"></canvas>
+<div id="focus" aria-hidden="true"></div>
+<div class="film" aria-hidden="true"></div>
+
+<div id="skVeil"><div class="veil-word">Membuka pintu aula baja…</div></div>
+<div class="bars" aria-hidden="true"><i></i><i></i></div>
+<div id="introTitle" aria-hidden="true">
+  <span class="kicker">Di dalam istana</span>
+  <span class="big">Aula Baja</span>
+  <span class="sub2">tempat rangka dirakit dari satu kalimat</span>
+</div>
+<button id="skip" class="btn ghost" type="button">Lewati ⏭</button>
+
+<nav class="topbar" aria-label="Navigasi">
+  <a class="crest" href="../" aria-label="Kembali ke istana Gesture Control">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 26h24l-2-14-5 5-5-11-5 11-5-5z" fill="#e0a94a" stroke="#ffe7a8" stroke-width="1.2" stroke-linejoin="round"/><circle cx="16" cy="4" r="2" fill="#ffe7a8"/></svg>
+    <b>Steel Kit</b>
+  </a>
+  <div class="links">
+    <a href="#masuk">Aula</a>
+    <a href="#fitur">Isi</a>
+    <a href="#demo">Demo</a>
+    <a href="#pasang">Pasang</a>
+    <a href="#unduh">Unduh</a>
+    <a href="../">Gesture Control</a>
+  </div>
+</nav>
+
+<main>
+  <section id="masuk">
+    <div class="wrap">
+      <div class="left narrow">
+        <span class="eyebrow reveal">Aula Baja · plugin AutoCAD gratis</span>
+        <h1 class="title gold reveal d1">Steel Kit</h1>
+        <p class="lead reveal d2">Satu kalimat. <b class="num" data-count="54">0</b> batang. <b class="num" data-count="174">0</b> sambungan.
+          Ucapkan gudang yang Anda mau, Steel Kit merakit rangkanya, menyambung setiap titik temu dengan rapat, lalu
+          menggambar lembar kerja dan hitungan bajanya.</p>
+        <p class="hint reveal d2"><span>Di meja itu ada potongan rangka baja yang kurang satu baut. Pasang bautnya, unduhannya mulai.</span></p>
+        <p class="reveal d2"><a class="btn gem" href="#unduh">Pasang baut terakhir</a> <a class="btn ghost" href="#demo">Lihat demo</a></p>
+        <p class="fine reveal d2"><i>"portal bentang 20 meter, tinggi 6, lima bay jarak 6 meter, kolom WF400, gording C150"</i></p>
+      </div>
+    </div>
+    <div class="scroll-cue" aria-hidden="true">GULIR<i></i></div>
+  </section>
+
+  <section id="fitur">
+    <div class="wrap">
+      <div class="panel royal left reveal sk-panel">
+        <span class="banner l" aria-hidden="true"></span><span class="banner r" aria-hidden="true"></span>
+        <h2 class="gold">Isi Aula Baja</h2>
+        <div class="rule" aria-hidden="true"></div>
+        <div class="facts">
+          <div class="fact"><h3>Asisten berbahasa Indonesia</h3><p>Ketik atau bicara. Usulan batang diperiksa dulu sebelum dipasang. Suara diproses di laptop Anda.</p></div>
+          <div class="fact"><h3>28 jenis sambungan</h3><p>Pelat dasar, pelat ujung, haunch, bracing, truss. Dipilih lewat gambar teknik, dicek jarak & ukuran minimumnya.</p></div>
+          <div class="fact"><h3>Potongan rapat</h3><p>Batang miring dipotong tegak rapat ke pelat: lutut, puncak, kolom angin. Tidak menembus, tidak bercelah.</p></div>
+          <div class="fact"><h3>Gambar kerja & Excel</h3><p>Layout berdimensi, detail sambungan, daftar bahan, dan quantity takeoff metrik. 476 profil bisa diubah.</p></div>
+        </div>
+        <p class="fine">Klik lukisan yang melayang mengitari meja untuk melihat lebih dekat.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="demo">
+    <div class="wrap">
+      <div class="panel right reveal sk-panel">
+        <h2 class="gold">Cermin Demo</h2>
+        <div class="rule" aria-hidden="true"></div>
+        <p>Cermin di atas meja memutar alurnya: bicara, periksa usulan, sambungan otomatis, model 3D, sampai lembar kerja.</p>
+        <p class="sk-gap"><button class="btn gem" id="playDemo" type="button">Putar layar penuh</button></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pasang">
+    <div class="wrap">
+      <h2 class="gold reveal">Pasangnya Gampang</h2>
+      <p class="sub reveal">Sekali klik, tanpa hak admin. AutoCAD 2021 sampai 2027.</p>
+      <div class="steps">
+        <div class="panel step reveal"><h3>Unduh dulu</h3>
+          <p>Pasang baut terakhir di meja, unduhannya mulai: <b>SteelKitSetup.exe</b>, sekitar 2 MB.</p></div>
+        <div class="panel step reveal d1"><h3>Tutup AutoCAD</h3>
+          <p>Klik ganda penginstalnya, klik <b>Pasang</b>. Centang suara offline bila ingin bicara ke asisten (unduh sekali ±181 MB).</p></div>
+        <div class="panel step reveal d2"><h3>Ketik <span class="cmd">SKASISTEN</span></h3>
+          <p>Buka AutoCAD, pilih tab ribbon <b>Steel Kit</b> atau ketik perintahnya, lalu ceritakan rangka yang Anda mau.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="unduh">
+    <div class="wrap">
+      <div class="panel royal right reveal sk-panel">
+        <span class="banner l" aria-hidden="true"></span><span class="banner r" aria-hidden="true"></span>
+        <h2 class="gold">Baut Terakhir</h2>
+        <div class="rule" aria-hidden="true"></div>
+        <p>Satu baut lagi, sambungannya utuh. Klik lubang yang berpendar di pelat ujung, atau tombol ini.</p>
+        <p class="sk-gap"><button class="btn gem" id="install" type="button">Pasang baut &amp; unduh</button></p>
+        <p class="fine" id="installMsg" role="status" aria-live="polite">SteelKitSetup.exe · sekitar 2 MB · AutoCAD 2021–2027 · Windows 10/11</p>
+        <p class="fine"><a id="repoLink" href="#" target="_blank" rel="noopener">Kode sumber di GitHub</a> · <a id="notesLink" href="#" target="_blank" rel="noopener">Catatan rilis</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Steel Kit menyiapkan geometri, gambar, dan kuantitas. Cek sambungan hanya aturan jarak/ukuran minimum menurut praktik umum,
+      bukan cek kekuatan: kapasitas tetap dihitung dan disahkan engineer struktur berlisensi.</span>
+    <span>Gratis · lisensi MIT · <a href="../">Kembali ke istana Gesture Control</a></span>
+  </div>
+</footer>
+
+<div id="modal" class="sk-modal" hidden>
+  <div class="sk-modal-in panel">
+    <button class="sk-x" type="button" aria-label="Tutup">✕</button>
+    <img id="modalImg" alt="">
+    <h3 id="modalTitle"></h3><p id="modalBody"></p>
+  </div>
+</div>
+<div id="player" class="sk-modal" hidden>
+  <div class="sk-modal-in panel wide">
+    <button class="sk-x" type="button" aria-label="Tutup">✕</button>
+    <canvas id="playerCanvas" width="1280" height="720"></canvas>
+    <div class="sk-pctl"><button class="btn ghost" type="button" id="pPrev">⏮</button><button class="btn ghost" type="button" id="pPlay">⏸</button><button class="btn ghost" type="button" id="pNext">⏭</button></div>
+  </div>
+</div>
+
+<script type="module" src="steelkit.js"></script>
+</body>
+</html>
