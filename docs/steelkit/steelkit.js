@@ -460,7 +460,7 @@ function bannerTexture() {
 }
 
 // ------------------------------------------------------------------ lukisan (gambar fitur) + keterangannya
-const PAPER = new Set(['layout_struktur', 'layout_detail']);
+const PAPER = new Set(['layout_struktur', 'layout_detail', 'fabrikasi']);
 function drawShot(ctx, img, name, x, y, w, h) {
   ctx.save();
   if (PAPER.has(name)) ctx.filter = 'invert(1) hue-rotate(185deg) sepia(.25) brightness(.92)';
@@ -490,12 +490,19 @@ const CARDS = [
     notes: [[12, 50, 'Pilih jenis profil dan ukurannya (476 ukuran bawaan).'], [46, 44, 'Gambar penampang dengan dimensi dan titik berat.'],
       [84, 20, 'Dimensi bisa diubah; nama profil ikut otomatis.'], [84, 60, 'Properti dihitung langsung: luas, berat, Ix, Sx, Zx, dan lainnya.'],
       [92, 96, 'Gambar batang 3D/2D, penampang, atau tabel properti.']] },
-  { img: 'layout_struktur', title: 'Lembar struktur otomatis', lead: 'Satu perintah menghasilkan lembar A3 berisi isometrik, denah, dan tampak, lengkap dengan dimensi dan leader.',
-    notes: [[26, 22, 'Isometrik dengan garis tersembunyi.'], [74, 22, 'Denah: jarak portal, nama profil, dan bracing.'],
-      [26, 61, 'Tampak depan: bentang, tinggi, dan rafter.'], [74, 61, 'Tampak samping: jarak bay dan bracing dinding.'], [77, 91, 'Kotak judul: nama proyek, lembar, tanggal.']] },
-  { img: 'layout_detail', title: 'Lembar detail sambungan', lead: 'Setiap jenis sambungan mendapat lembar detail berskala dengan daftar bahan.',
-    notes: [[30, 13, 'Nama detail dan hasil cek jarak/ukuran minimum.'], [25, 47, 'Tampak samping lutut: pelat ujung, baut, haunch.'],
-      [56, 47, 'Tampak muka pelat: jarak baut berdimensi.'], [81, 26, 'Daftar bahan: pelat, baut, berat (kg).'], [77, 91, 'Kotak judul lembar.']] },
+  { img: 'layout_struktur', title: 'Lembar struktur otomatis', lead: 'Satu perintah menghasilkan lembar A3 berisi isometrik, denah, dan tampak: grid as, elevasi, marking, catatan umum, dan kotak judul lengkap.',
+    notes: [[26, 22, 'Isometrik dengan garis tersembunyi.'], [67, 10, 'Grid as A–B dan 1–6 dari titik dasar kolom, dengan dimensi antar as.'],
+      [18, 56, 'Marking batang sama dengan daftar Excel, mis. C1–C6 WF400.'], [43, 54, 'Penanda elevasi: ±0.000 dasar kolom sampai puncak rangka.'],
+      [72, 62, 'Tampak samping: jarak bay dan bracing dinding.'], [16, 87, 'Catatan umum: mutu dan prosedur ditulis sesuai spesifikasi proyek.'],
+      [78, 91, 'Kotak judul: proyek, no. gambar, lembar x/n, revisi, penanggung jawab.']] },
+  { img: 'layout_detail', title: 'Lembar detail sambungan', lead: 'Setiap jenis sambungan mendapat lembar detail berskala dengan simbol las dan daftar bahan.',
+    notes: [[22, 14, 'Nama detail dan hasil cek jarak/ukuran minimum.'], [22, 44, 'Tampak samping lutut: pelat ujung, baut, haunch.'],
+      [27, 50, 'Simbol las: ukuran leher a8/a5 untuk sayap dan badan.'], [57, 47, 'Tampak muka pelat: jarak baut berdimensi, angka tidak bertumpuk.'],
+      [81, 27, 'Daftar bahan: pelat, baut, berat (kg).'], [78, 91, 'Kotak judul lembar.']] },
+  { img: 'fabrikasi', title: 'Gambar fabrikasi per marking', lead: 'Satu lembar untuk tiap marking batang, siap dibawa ke bengkel: posisi lubang, panjang potong, dan jumlahnya.',
+    notes: [[33, 19, 'Tampak samping dari batang sebenarnya: lubang lonjong rod ikut terlihat.'], [40, 54, 'Lubang baut dari ujung kiri; jarak sama digabung 4x110=440.'],
+      [80, 17, 'Data marking: profil, jumlah, panjang potong, berat.'], [78, 46, 'Daftar lubang: koordinat setiap lubang untuk bengkel.'],
+      [78, 91, 'Nomor gambar SK-FB per marking.']] },
   { img: 'installer', title: 'Pasang sekali klik', lead: 'Penginstal ±2 MB, tanpa hak admin. Mendeteksi AutoCAD 2021–2027 dan bisa sekalian memasang suara offline.',
     notes: [[18, 18, 'Logo dan versi yang terpasang.'], [50, 40, 'Versi AutoCAD yang ditemukan di komputer Anda.'], [80, 90, 'Klik Pasang. Selesai.']] },
 ];
@@ -533,7 +540,8 @@ const SLIDES = [
   { img: 'potongan_rapat', cap: 'Batang miring dipotong tegak rapat ke pelat' },
   { img: 'lutut_puncak_3d', cap: 'Model 3D lengkap: lutut, puncak, gording, bracing' },
   { img: 'layout_struktur', cap: 'Layout otomatis berdimensi dan berleader' },
-  { img: 'layout_detail', cap: 'Lembar detail sambungan dengan daftar bahan' },
+  { img: 'layout_detail', cap: 'Lembar detail sambungan dengan simbol las dan daftar bahan' },
+  { img: 'fabrikasi', cap: 'Gambar fabrikasi per marking, lengkap dengan daftar lubang' },
   { img: 'installer', cap: 'Pasang sekali klik · AutoCAD 2021–2027 · gratis' },
 ];
 const slideImgs = SLIDES.map(s => { const im = new Image(); im.src = 'img/' + s.img + '.webp'; return im; });
