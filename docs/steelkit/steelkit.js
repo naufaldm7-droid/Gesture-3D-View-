@@ -469,42 +469,42 @@ function drawShot(ctx, img, name, x, y, w, h) {
 }
 // x, y dalam persen gambar penuh
 const CARDS = [
-  { img: 'asisten', title: 'Asisten berbahasa Indonesia', lead: 'Ceritakan rangka yang Anda mau dengan kalimat biasa. Steel Kit menyusun usulannya; Anda periksa dulu sebelum dipasang.',
+  { img: 'installer', step: 'Mulai · pasang sekali klik', title: 'Pasang sekali klik', lead: 'Penginstal ±2 MB, tanpa hak admin. Mendeteksi AutoCAD 2021–2027 dan bisa sekalian memasang suara offline.',
+    notes: [[18, 18, 'Logo dan versi yang terpasang.'], [50, 40, 'Versi AutoCAD yang ditemukan di komputer Anda.'], [80, 90, 'Klik Pasang. Selesai.']] },
+  { img: 'profil', step: 'Langkah 1 · SKPROFIL', title: '476 profil baja', lead: 'Pustaka profil lengkap. Semua dimensi bisa diubah, propertinya dihitung langsung.',
+    notes: [[12, 50, 'Pilih jenis profil dan ukurannya (476 ukuran bawaan).'], [46, 44, 'Gambar penampang dengan dimensi dan titik berat.'],
+      [84, 20, 'Dimensi bisa diubah; nama profil ikut otomatis.'], [84, 60, 'Properti dihitung langsung: luas, berat, Ix, Sx, Zx, dan lainnya.'],
+      [92, 96, 'Gambar batang 3D/2D, penampang, atau tabel properti.']] },
+  { img: 'asisten', step: 'Langkah 2 · SKASISTEN', title: 'Asisten berbahasa Indonesia', lead: 'Ceritakan rangka yang Anda mau dengan kalimat biasa. Steel Kit menyusun usulannya; Anda periksa dulu sebelum dipasang.',
     notes: [[6, 13, 'Tombol mikrofon: klik lalu bicara. Rekaman berhenti sendiri saat Anda diam; suara diproses di laptop Anda.'],
       [47, 14, 'Kalimat maksud Anda, hasil ketikan atau suara.'], [91, 11, 'Baca maksud: kalimat diubah menjadi usulan batang.'],
       [30, 42, 'Ringkasan usulan dan asumsi yang perlu Anda periksa.'], [31, 75, 'Daftar batang: profil, koordinat, dan putaran. Semua sel bisa diedit.'],
       [82, 41, 'Jumlah batang, panjang total, dan perkiraan berat baja.'], [80, 68, 'Pratinjau 3D: seret untuk memutar, gulir untuk zoom.'],
       [91, 96, 'Pasang ke gambar AutoCAD, sekaligus sambungan otomatis bila sakelarnya menyala.']] },
-  { img: 'sambungan', title: '28 jenis sambungan', lead: 'Pilih sambungan lewat gambar teknik, atur pelat, baut, angkur, dan las, lalu lihat hasil ceknya seketika.',
+  { img: 'lutut_puncak_3d', step: 'Langkah 3 · SKUBAH / SKBROWSER', title: 'Model 3D di AutoCAD', lead: 'Batang, pelat, baut, dan angkur menjadi solid 3D. Ubah lewat grip atau Browser; sambungan ikut diperbarui.',
+    notes: [[25, 28, 'Lutut tampak samping: rafter dipotong tegak, haunch tepat di bawahnya.'], [75, 24, 'Puncak: dua pelat ujung tegak dibaut.'],
+      [25, 76, 'Lutut 3D lengkap dengan gording dan cleat-nya.'], [75, 76, 'Puncak 3D: sambungan rapat tanpa celah.']] },
+  { img: 'sambungan', step: 'Langkah 4 · SKSAMBUNGAUTO / SKSAMBUNG', title: '28 jenis sambungan', lead: 'Pilih sambungan lewat gambar teknik, atur pelat, baut, angkur, dan las, lalu lihat hasil ceknya seketika.',
     notes: [[12, 49, 'Galeri 28 jenis sambungan bergambar, lengkap dengan pencarian.'], [48, 38, 'Pratinjau dua tampak berdimensi, dibangkitkan dari geometri sebenarnya.'],
       [36, 82, 'Kapan sambungan ini dipakai (praktik umum).'], [60, 82, 'Cek jarak & ukuran minimum. Ini bukan cek kekuatan.'],
       [85, 46, 'Parameter: profil, pelat, baut, las. Ubah, pratinjau ikut berubah.'], [91, 96, 'Buat sambungan 3D sekaligus detail 2D-nya.']] },
-  { img: 'potongan_rapat', title: 'Potongan rapat & aktual', lead: 'Ujung batang miring dipotong tegak rapat ke pelat. Tidak menembus, tidak bercelah: sama di pratinjau, detail 2D, dan model 3D.',
+  { img: 'potongan_rapat', step: 'Langkah 5 · SKBENTROK', title: 'Potongan rapat & aktual', lead: 'Ujung batang miring dipotong tegak rapat ke pelat. Tidak menembus, tidak bercelah: sama di pratinjau, detail 2D, dan model 3D.',
     notes: [[17, 30, 'Puncak: kedua rafter dipotong tegak rapat ke pelat ujung.'], [50, 30, 'Lutut + haunch: rafter dan sayap haunch rapat ke pelat.'],
       [83, 30, 'Kolom angin: ujung kolom mengikuti kemiringan pelat kepala.'], [17, 78, 'Balok anak ke badan balok induk (fin plate).'],
       [50, 78, 'Las langsung hollow: cabang rapat ke muka batang tepi.'], [83, 78, 'Las langsung pipa (potongan mulut ikan).']] },
-  { img: 'lutut_puncak_3d', title: 'Model 3D di AutoCAD', lead: 'Batang, pelat, baut, dan angkur menjadi solid 3D. Ubah lewat grip atau Browser; sambungan ikut diperbarui.',
-    notes: [[25, 28, 'Lutut tampak samping: rafter dipotong tegak, haunch tepat di bawahnya.'], [75, 24, 'Puncak: dua pelat ujung tegak dibaut.'],
-      [25, 76, 'Lutut 3D lengkap dengan gording dan cleat-nya.'], [75, 76, 'Puncak 3D: sambungan rapat tanpa celah.']] },
-  { img: 'profil', title: '476 profil baja', lead: 'Pustaka profil lengkap. Semua dimensi bisa diubah, propertinya dihitung langsung.',
-    notes: [[12, 50, 'Pilih jenis profil dan ukurannya (476 ukuran bawaan).'], [46, 44, 'Gambar penampang dengan dimensi dan titik berat.'],
-      [84, 20, 'Dimensi bisa diubah; nama profil ikut otomatis.'], [84, 60, 'Properti dihitung langsung: luas, berat, Ix, Sx, Zx, dan lainnya.'],
-      [92, 96, 'Gambar batang 3D/2D, penampang, atau tabel properti.']] },
-  { img: 'layout_struktur', title: 'Lembar struktur otomatis', lead: 'Satu perintah menghasilkan lembar A3 berisi isometrik, denah, dan tampak: grid as, elevasi, marking, catatan umum, dan kotak judul lengkap.',
+  { img: 'layout_struktur', step: 'Langkah 6 · SKLAYOUT', title: 'Lembar struktur otomatis', lead: 'Satu perintah menghasilkan lembar A3 berisi isometrik, denah, dan tampak: grid as, elevasi, marking, catatan umum, dan kotak judul lengkap.',
     notes: [[26, 22, 'Isometrik dengan garis tersembunyi.'], [67, 10, 'Grid as A–B dan 1–6 dari titik dasar kolom, dengan dimensi antar as.'],
       [18, 56, 'Marking batang sama dengan daftar Excel, mis. C1–C6 WF400.'], [43, 54, 'Penanda elevasi: ±0.000 dasar kolom sampai puncak rangka.'],
       [72, 62, 'Tampak samping: jarak bay dan bracing dinding.'], [16, 87, 'Catatan umum: mutu dan prosedur ditulis sesuai spesifikasi proyek.'],
       [78, 91, 'Kotak judul: proyek, no. gambar, lembar x/n, revisi, penanggung jawab.']] },
-  { img: 'layout_detail', title: 'Lembar detail sambungan', lead: 'Setiap jenis sambungan mendapat lembar detail berskala dengan simbol las dan daftar bahan.',
+  { img: 'layout_detail', step: 'Langkah 6 · SKLAYOUT', title: 'Lembar detail sambungan', lead: 'Setiap jenis sambungan mendapat lembar detail berskala dengan simbol las dan daftar bahan.',
     notes: [[22, 14, 'Nama detail dan hasil cek jarak/ukuran minimum.'], [22, 44, 'Tampak samping lutut: pelat ujung, baut, haunch.'],
       [27, 50, 'Simbol las: ukuran leher a8/a5 untuk sayap dan badan.'], [57, 47, 'Tampak muka pelat: jarak baut berdimensi, angka tidak bertumpuk.'],
       [81, 27, 'Daftar bahan: pelat, baut, berat (kg).'], [78, 91, 'Kotak judul lembar.']] },
-  { img: 'fabrikasi', title: 'Gambar fabrikasi per marking', lead: 'Satu lembar untuk tiap marking batang, siap dibawa ke bengkel: posisi lubang, panjang potong, dan jumlahnya.',
+  { img: 'fabrikasi', step: 'Langkah 7 · SKFABRIKASI', title: 'Gambar fabrikasi per marking', lead: 'Satu lembar untuk tiap marking batang, siap dibawa ke bengkel: posisi lubang, panjang potong, dan jumlahnya.',
     notes: [[33, 19, 'Tampak samping dari batang sebenarnya: lubang lonjong rod ikut terlihat.'], [40, 54, 'Lubang baut dari ujung kiri; jarak sama digabung 4x110=440.'],
       [80, 17, 'Data marking: profil, jumlah, panjang potong, berat.'], [78, 46, 'Daftar lubang: koordinat setiap lubang untuk bengkel.'],
       [78, 91, 'Nomor gambar SK-FB per marking.']] },
-  { img: 'installer', title: 'Pasang sekali klik', lead: 'Penginstal ±2 MB, tanpa hak admin. Mendeteksi AutoCAD 2021–2027 dan bisa sekalian memasang suara offline.',
-    notes: [[18, 18, 'Logo dan versi yang terpasang.'], [50, 40, 'Versi AutoCAD yang ditemukan di komputer Anda.'], [80, 90, 'Klik Pasang. Selesai.']] },
 ];
 function goldFrame(x, X, Y, w, h, t) {
   const g = x.createLinearGradient(X, Y, X + w, Y + h); g.addColorStop(0, '#ffe7a8'); g.addColorStop(0.45, '#c08a2a'); g.addColorStop(0.55, '#e0a94a'); g.addColorStop(1, '#7a4a14');
@@ -535,22 +535,44 @@ const cardMeshes = CARDS.map((c, i) => {
 
 // ------------------------------------------------------------------ cermin video pengenalan
 const SLIDES = [
-  { img: 'asisten', cap: 'Bicara atau ketik: "portal bentang 20 meter, tinggi 6, lima bay…"' },
-  { img: 'sambungan', cap: '28 jenis sambungan bergambar teknik, dicek jarak & ukuran minimum' },
-  { img: 'potongan_rapat', cap: 'Batang miring dipotong tegak rapat ke pelat' },
-  { img: 'lutut_puncak_3d', cap: 'Model 3D lengkap: lutut, puncak, gording, bracing' },
-  { img: 'layout_struktur', cap: 'Layout otomatis berdimensi dan berleader' },
-  { img: 'layout_detail', cap: 'Lembar detail sambungan dengan simbol las dan daftar bahan' },
-  { img: 'fabrikasi', cap: 'Gambar fabrikasi per marking, lengkap dengan daftar lubang' },
-  { img: 'installer', cap: 'Pasang sekali klik · AutoCAD 2021–2027 · gratis' },
+  { img: 'installer', cap: 'Mulai: pasang sekali klik, buka tab ribbon Steel Kit di AutoCAD' },
+  { img: 'profil', cap: '1 · SKPROFIL: pilih ukuran profil (boleh dilewati)' },
+  { img: 'asisten', cap: '2 · SKASISTEN: ketik atau ucapkan rangkanya, periksa, lalu Pasang' },
+  { img: 'lutut_puncak_3d', cap: '3 · Model 3D: rapikan dengan grip, SKUBAH, atau SKBROWSER' },
+  { img: 'sambungan', cap: '4 · SKSAMBUNGAUTO lalu SKSAMBUNG: sambungan & opsinya' },
+  { img: 'potongan_rapat', cap: '5 · SKBENTROK: rapat, tidak ada yang saling menembus' },
+  { img: 'layout_struktur', cap: '6 · SKLAYOUT: lembar struktur berdimensi, grid, marking' },
+  { img: 'layout_detail', cap: '6 · SKLAYOUT: lembar detail sambungan, simbol las, daftar bahan' },
+  { img: 'fabrikasi', cap: '7 · SKFABRIKASI: satu lembar per marking untuk bengkel' },
+  { img: null, cap: '8 · SKEXCEL: daftar bahan & berat ke Excel. Selesai!' },
 ];
-const slideImgs = SLIDES.map(s => { const im = new Image(); im.src = 'img/' + s.img + '.webp'; return im; });
+// slide penutup tanpa gambar: ringkasan urutan perintah
+const FLOW = [['1', 'SKPROFIL', 'pilih profil'], ['2', 'SKASISTEN', 'susun rangka'], ['3', 'SKUBAH', 'rapikan batang'], ['4', 'SKSAMBUNGAUTO', 'sambung'],
+  ['5', 'SKBENTROK', 'cek tabrakan'], ['6', 'SKLAYOUT', 'gambar kerja'], ['7', 'SKFABRIKASI', 'gambar bengkel'], ['8', 'SKEXCEL', 'hitung bahan']];
+function drawFlow(ctx, w, h, alpha) {
+  ctx.save(); ctx.globalAlpha = alpha;
+  ctx.fillStyle = '#ffe7a8'; ctx.textAlign = 'center'; ctx.font = `700 ${Math.round(h * 0.06)}px Cinzel, serif`;
+  ctx.fillText('Urutan Desain Steel Kit', w / 2, h * 0.13);
+  const cols = 4, cw = w * 0.21, chh = h * 0.27, gx = w * 0.02, x0 = (w - cols * cw - (cols - 1) * gx) / 2;
+  FLOW.forEach(([n, c, t], i) => {
+    const x = x0 + (i % cols) * (cw + gx), y = h * 0.2 + Math.floor(i / cols) * (chh + h * 0.04);
+    ctx.fillStyle = 'rgba(0,0,0,.4)'; ctx.fillRect(x, y, cw, chh);
+    ctx.strokeStyle = 'rgba(224,169,74,.55)'; ctx.lineWidth = 2; ctx.strokeRect(x, y, cw, chh);
+    ctx.fillStyle = '#e0a94a'; ctx.beginPath(); ctx.arc(x + cw / 2, y + chh * 0.25, h * 0.032, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#2a1606'; ctx.font = `700 ${Math.round(h * 0.034)}px Cinzel, serif`; ctx.fillText(n, x + cw / 2, y + chh * 0.25 + h * 0.012);
+    ctx.fillStyle = '#ffe7a8'; ctx.font = `600 ${Math.round(h * 0.034)}px Consolas, monospace`; ctx.fillText(c, x + cw / 2, y + chh * 0.6);
+    ctx.fillStyle = '#d9c6a2'; ctx.font = `italic ${Math.round(h * 0.034)}px "EB Garamond", serif`; ctx.fillText(t, x + cw / 2, y + chh * 0.82);
+  });
+  ctx.restore();
+}
+const slideImgs = SLIDES.map(s => { const im = new Image(); if (s.img) im.src = 'img/' + s.img + '.webp'; return im; });
 const SLIDE_T = 4.5;
 function drawDemo(ctx, w, h, t) {
   const n = SLIDES.length, total = n * SLIDE_T, tt = ((t % total) + total) % total;
   const i = Math.floor(tt / SLIDE_T), f = (tt - i * SLIDE_T) / SLIDE_T;
   ctx.fillStyle = '#100a07'; ctx.fillRect(0, 0, w, h);
   const draw = (k, alpha, prog) => {
+    if (!SLIDES[k].img) { drawFlow(ctx, w, h * 0.86, alpha); return; }
     const im = slideImgs[k]; if (!im.complete || !im.naturalWidth) return;
     const s = Math.min(w / im.width, (h * 0.84) / im.height) * (1 + prog * 0.05);
     ctx.globalAlpha = alpha; drawShot(ctx, im, SLIDES[k].img, (w - im.width * s) / 2, (h * 0.84 - im.height * s) / 2 + h * 0.02, im.width * s, im.height * s); ctx.globalAlpha = 1;
@@ -590,12 +612,13 @@ const KEYS = {
   masuk: { p: [0, 3.0, TABLE.z + 12], l: [0, 2.0, TABLE.z], s: -0.16 },
   fitur: { p: [-5.2, 3.2, TABLE.z + 5.2], l: [0.4, 2.0, TABLE.z], s: 0 },
   pengenalan: { p: [0.6, 3.6, TABLE.z + 4.2], l: [0, 5.2, TABLE.z - 6.5], s: -0.2 },
+  urutan: { p: [-3.6, 4.4, TABLE.z + 10.5], l: [0.2, 2.6, TABLE.z - 2], s: 0 },
   pasang: { p: [4.8, 3.6, TABLE.z + 7.2], l: [-0.6, 1.6, TABLE.z], s: 0 },
   unduh: { p: [TABLE.x + 0.55, 2.95, TABLE.z + 3.9], l: [TABLE.x + 0.35, 1.45, TABLE.z + 0.1], s: -0.12, sy: 0.14 },
   apresiasi: { p: [6.5, 3.8, TABLE.z + 9], l: [-6, 4.4, TABLE.z - 5], s: 0 },
 };
 const FOCUS = {
-  masuk: TABLE.clone().setY(1.6), fitur: TABLE.clone().setY(2.2), pengenalan: mirror.position.clone(), pasang: TABLE.clone().setY(1.5),
+  masuk: TABLE.clone().setY(1.6), fitur: TABLE.clone().setY(2.2), pengenalan: mirror.position.clone(), urutan: TABLE.clone().setY(2.4), pasang: TABLE.clone().setY(1.5),
   unduh: TABLE.clone().add(new THREE.Vector3(0.4, 1.4, 0.2)), apresiasi: new THREE.Vector3(0, 3.5, TABLE.z),
 };
 const SECS = Object.keys(KEYS);
@@ -714,6 +737,7 @@ function openViewer(i) {
   const c = CARDS[vIndex];
   const img = $('#viewerImg');
   img.src = 'img/full/' + c.img + '.webp'; img.alt = c.title;
+  $('#viewerStep').textContent = c.step || '';
   $('#viewerTitle').textContent = c.title;
   $('#viewerLead').textContent = c.lead;
   const pins = $('#viewerPins'), list = $('#viewerNotes');

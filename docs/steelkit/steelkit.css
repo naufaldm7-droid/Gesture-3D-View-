@@ -115,3 +115,27 @@ body.sk #unduh .sk-panel h2 { font-size: clamp(24px, 3vw, 34px); }
   .sk-viewer-img, .sk-viewer-img img { max-height: 64vh; }
   .sk-viewer-side { max-height: none; align-self: start; }
 }
+
+/* urutan desain: 8 langkah bernomor + daftar semua perintah (dibuka bila perlu) */
+.sk-flow { list-style: none; padding: 0; margin: 6px 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.sk-flow > li { position: relative; padding: 22px 18px 18px; display: flex; flex-direction: column; gap: 8px; }
+.sk-flow h3 { margin: 0; padding-left: 38px; min-height: 30px; display: flex; align-items: center; font-size: 17px; }
+.sk-no { position: absolute; top: 20px; left: 18px; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+  font: 700 14px var(--f-head); color: #2a1606; background: linear-gradient(180deg, #ffe9b0, #d99a3c); box-shadow: 0 0 0 2px #2a1606; }
+.sk-flow .sk-cmds { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; color: var(--muted); font-size: 15px; }
+.sk-flow .sk-cmds .cmd { white-space: nowrap; }
+.sk-flow p { font-size: 16px; line-height: 1.45; }
+.sk-flow p + p { margin-top: 0; }
+.sk-tag { align-self: flex-start; margin-top: auto; font: 600 11px var(--f-head); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--gold2); border: 1px solid rgba(224, 169, 74, .4); border-radius: 3px; padding: 2px 8px; }
+.sk-flow-note { margin-top: 16px !important; }
+.sk-all { margin-top: 18px; padding: 16px 24px; }
+.sk-cmd-groups { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 14px; }
+.sk-cmd-groups h3 { font-size: 15px; }
+.sk-cmd-groups dl { margin: 0; display: grid; gap: 6px; }
+.sk-cmd-groups dt { font: 600 13.5px Consolas, "Cascadia Mono", monospace; color: var(--gold1); }
+.sk-cmd-groups dd { margin: -4px 0 4px; font-size: 15px; line-height: 1.35; color: var(--muted); }
+.sk-vstep { display: block; margin-bottom: 6px; font: 600 12px var(--f-head); letter-spacing: .12em; text-transform: uppercase; color: var(--gold2); }
+.sk-vstep:empty { display: none; }
+@media (max-width: 1100px) { .sk-flow, .sk-cmd-groups { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .sk-flow, .sk-cmd-groups { grid-template-columns: 1fr; } .sk-all { padding: 14px 16px; } }

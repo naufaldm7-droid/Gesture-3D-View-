@@ -53,6 +53,7 @@
     <a href="#masuk">Steel Kit</a>
     <a href="#fitur">Isi</a>
     <a href="#pengenalan">Pengenalan</a>
+    <a href="#urutan">Urutan</a>
     <a href="#pasang">Pasang</a>
     <a href="#unduh">Unduh</a>
     <a href="#apresiasi">Apresiasi</a>
@@ -98,9 +99,73 @@
       <div class="panel right reveal sk-panel">
         <h2 class="gold">Video Pengenalan</h2>
         <div class="rule" aria-hidden="true"></div>
-        <p>Cermin di atas meja memutar alurnya: bicara, periksa usulan, sambungan otomatis, model 3D, lembar kerja, sampai gambar fabrikasi.</p>
-        <p class="sk-gap"><button class="btn gem" id="playDemo" type="button">Putar layar penuh</button></p>
+        <p>Steel Kit mengubah ide rangka baja menjadi model 3D bersambungan lengkap, gambar kerja, gambar fabrikasi, dan
+          daftar bahan, semuanya di dalam AutoCAD.</p>
+        <p>Cermin di atas meja memutar alurnya sesuai urutan kerja, dengan perintah yang dipakai di tiap langkah.</p>
+        <p class="sk-gap sk-row"><button class="btn gem" id="playDemo" type="button">Putar layar penuh</button> <a class="btn ghost" href="#urutan">Lihat urutan desain</a></p>
       </div>
+    </div>
+  </section>
+
+  <section id="urutan">
+    <div class="wrap">
+      <h2 class="gold reveal">Urutan Desain</h2>
+      <p class="sub reveal">Delapan langkah dari ide sampai bengkel. Semua perintah diawali <span class="cmd">SK</span> dan ada juga di tab ribbon <b>Steel Kit</b>.</p>
+      <ol class="sk-flow">
+        <li class="panel reveal"><span class="sk-no">1</span><h3>Pilih profil</h3><p class="sk-cmds"><span class="cmd">SKPROFIL</span></p>
+          <p>Tentukan ukuran WF, H, C, siku, atau hollow. Bisa dilewati: asisten memakai profil contoh yang nanti bisa diganti.</p><span class="sk-tag">boleh dilewati</span></li>
+        <li class="panel reveal d1"><span class="sk-no">2</span><h3>Susun rangka</h3><p class="sk-cmds"><span class="cmd">SKASISTEN</span> <i>atau</i> <span class="cmd">SKBATANG</span></p>
+          <p>Ketik atau ucapkan, mis. <i>"gudang bentang 20 m, tinggi 6 m, 5 bay"</i>, lalu periksa usulan dan klik Pasang. Atau gambar batang dari titik ke titik.</p></li>
+        <li class="panel reveal d2"><span class="sk-no">3</span><h3>Rapikan batang</h3><p class="sk-cmds"><span class="cmd">SKUBAH</span> <span class="cmd">SKPUTAR</span> <span class="cmd">SKBROWSER</span></p>
+          <p>Ubah panjang, profil, atau putaran. Bisa juga dengan tarik grip, atau lewat palet Browser per level dan marking.</p><span class="sk-tag">bila perlu</span></li>
+        <li class="panel reveal"><span class="sk-no">4</span><h3>Sambung</h3><p class="sk-cmds"><span class="cmd">SKSAMBUNGAUTO</span> <span class="cmd">SKSAMBUNG</span></p>
+          <p>Sambungkan semua titik temu sekaligus. Lalu pilih sambungan untuk mengubah pelat, baut, haunch, atau pengaku.</p></li>
+        <li class="panel reveal d1"><span class="sk-no">5</span><h3>Cek tabrakan</h3><p class="sk-cmds"><span class="cmd">SKBENTROK</span></p>
+          <p>Memastikan tidak ada batang, pelat, atau baut yang saling menembus. Irisannya digambar supaya mudah dicari.</p></li>
+        <li class="panel reveal d2"><span class="sk-no">6</span><h3>Gambar kerja</h3><p class="sk-cmds"><span class="cmd">SKLAYOUT</span></p>
+          <p>Lembar A3 otomatis: isometrik, denah, tampak, grid, elevasi, marking, lalu lembar detail tiap jenis sambungan.</p></li>
+        <li class="panel reveal"><span class="sk-no">7</span><h3>Gambar fabrikasi</h3><p class="sk-cmds"><span class="cmd">SKFABRIKASI</span></p>
+          <p>Satu lembar per marking untuk bengkel: panjang potong, posisi lubang, dan jumlah batang.</p></li>
+        <li class="panel reveal d1"><span class="sk-no">8</span><h3>Hitung bahan</h3><p class="sk-cmds"><span class="cmd">SKEXCEL</span></p>
+          <p>Daftar batang, pelat, baut, angkur, dan las ke Excel, lengkap dengan berat.</p></li>
+      </ol>
+      <p class="fine reveal sk-flow-note">Mengubah batang atau sambungan? Ulangi dari langkah 5. Lupa perintah? Ketik <span class="cmd">SKBANTUAN</span>.</p>
+
+      <details class="panel reveal sk-all">
+        <summary>Semua perintah Steel Kit</summary>
+        <div class="sk-cmd-groups">
+          <div><h3>Profil</h3><dl>
+            <dt>SKPROFIL</dt><dd>Pustaka profil: pilih, ubah, atau tambah ukuran</dd>
+            <dt>SKPENAMPANG</dt><dd>Gambar penampang 2D berdimensi</dd>
+            <dt>SKTABEL</dt><dd>Tabel properti profil</dd>
+            <dt>SKINFO</dt><dd>Properti profil aktif atau batang terpilih</dd>
+            <dt>SKKATALOG</dt><dd>Buka katalog profil sendiri (CSV, bisa diedit di Excel)</dd>
+            <dt>SKMUATULANG</dt><dd>Muat ulang katalog setelah diedit</dd></dl></div>
+          <div><h3>Batang</h3><dl>
+            <dt>SKASISTEN</dt><dd>Susun rangka dari kalimat atau suara</dd>
+            <dt>SKBATANG</dt><dd>Batang 3D dari titik ke titik</dd>
+            <dt>SKBATANG2D</dt><dd>Tampak batang 2D samping atau atas</dd>
+            <dt>SKUBAH</dt><dd>Ubah panjang, ujung, profil, acuan</dd>
+            <dt>SKPUTAR</dt><dd>Putar profil terhadap sumbunya</dd>
+            <dt>SKLABEL</dt><dd>Label nama profil dan panjang</dd>
+            <dt>SKLEVEL</dt><dd>Atur level untuk pengelompokan</dd></dl></div>
+          <div><h3>Sambungan</h3><dl>
+            <dt>SKSAMBUNGAUTO</dt><dd>Sambungan otomatis di semua titik temu</dd>
+            <dt>SKSAMBUNG</dt><dd>Pilih dan ubah sambungan lewat gambar teknik</dd>
+            <dt>SKSAMBUNGTITIK</dt><dd>Sambungan rekomendasi di satu titik</dd>
+            <dt>SKSAMBUNGPARAM</dt><dd>Ubah satu parameter dari baris perintah</dd>
+            <dt>SKDETAIL</dt><dd>Gambar detail 2D satu sambungan</dd></dl></div>
+          <div><h3>Cek &amp; hasil</h3><dl>
+            <dt>SKBENTROK</dt><dd>Cek tabrakan 3D</dd>
+            <dt>SKBROWSER</dt><dd>Palet model per level, kategori, marking</dd>
+            <dt>SKLAYOUT</dt><dd>Lembar struktur dan detail sambungan</dd>
+            <dt>SKFABRIKASI</dt><dd>Gambar fabrikasi per marking</dd>
+            <dt>SKEXCEL</dt><dd>Quantity takeoff ke Excel</dd>
+            <dt>SKBERAT</dt><dd>Daftar berat cepat (tabel + CSV)</dd>
+            <dt>SKBANTUAN</dt><dd>Daftar perintah di AutoCAD</dd>
+            <dt>SKRIBBON</dt><dd>Munculkan lagi tab ribbon</dd></dl></div>
+        </div>
+      </details>
     </div>
   </section>
 
@@ -163,6 +228,7 @@
     <div class="sk-viewer-img"><img id="viewerImg" alt=""><div id="viewerPins"></div></div>
   </div>
   <aside class="sk-viewer-side panel">
+    <span class="sk-vstep" id="viewerStep"></span>
     <h3 id="viewerTitle"></h3>
     <p id="viewerLead"></p>
     <ol id="viewerNotes"></ol>
